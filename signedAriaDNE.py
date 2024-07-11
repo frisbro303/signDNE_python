@@ -187,19 +187,19 @@ def ariaDNE(mesh, bandwidth=0.08, cut_thresh=0, dist_type='Euclidean', precomput
 
 
 def process_meshes(meshes, files, visualize=False, export_name=None):
-    data = np.zeros((len(files), 3))
+    data = []
     
     for i, mesh in enumerate(meshes):
         _, DNE, positive_DNE, negative_DNE, _ = ariaDNE(mesh)
         print("DNE for '" + files[i] + "': " + str(DNE))
         print("positive DNE for '" + files[i] + "': " + str(positive_DNE))
         print("negative DNE for '" + files[i] + "': " + str(negative_DNE))
-        data[i, :] = [DNE, positive_DNE, negative_DNE]
+        data.append([files[i], DNE, positive_DNE, negative_DNE])
         
     if export_name:
         with open(export_name, 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
-            writer.writerow(['DNE', 'Positive DNE', 'Negative DNE'])
+            writer.writerow(['File', 'DNE', 'Positive DNE', 'Negative DNE'])
             writer.writerows(data)
 
 
