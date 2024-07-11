@@ -37,4 +37,3 @@ The script outputs the following:
 
 - Visualization is only available for single file inputs
 - When processing a directory, only .ply files will be considered
-- Ensure you have the necessary permissions to read input files and write to the export location
