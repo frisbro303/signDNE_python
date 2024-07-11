@@ -72,6 +72,7 @@ def ariaDNE(mesh, bandwidth=0.08, cut_thresh=0, dist_type='Euclidean', precomput
     ## need to compute the entire surface
     V = mesh.vertices
     mesh = Centralize(mesh, scale=True)
+    mesh.fill_holes()
     #print(mesh.area)
     face_area = mesh.area_faces
     F2V = ComputeF2V(mesh)
@@ -85,12 +86,13 @@ def ariaDNE(mesh, bandwidth=0.08, cut_thresh=0, dist_type='Euclidean', precomput
             vertex_normals[vertex] += face_normals[i]
 
     vertex_normals = trimesh.util.unitize(vertex_normals)
-
-    filled_faces = np.asarray(o3d.t.geometry.TriangleMesh.from_legacy(mesh.as_open3d).fill_holes(hole_size=np.float64('inf')).to_legacy().triangles)
-    filled_mesh = trimesh.Trimesh(vertices=mesh.vertices, faces=filled_faces)
     
-    #not needed although more cool, when visualized
-    filled_mesh.fix_normals()
+    if mesh.is_watertight:
+        filled_mesh = mesh
+    else:
+        filled_faces = np.asarray(o3d.t.geometry.TriangleMesh.from_legacy(mesh.as_open3d).fill_holes(hole_size=np.float64('inf')).to_legacy().triangles)
+        filled_mesh = trimesh.Trimesh(vertices=mesh.vertices, faces=filled_faces)
+    
 
     points = mesh.vertices
     faces = mesh.faces
@@ -188,9 +190,11 @@ def ariaDNE(mesh, bandwidth=0.08, cut_thresh=0, dist_type='Euclidean', precomput
 
 def process_meshes(meshes, files, visualize=False, export_name=None):
     data = []
-    
+    local_DNE = None
     for i, mesh in enumerate(meshes):
-        _, DNE, positive_DNE, negative_DNE, _ = ariaDNE(mesh)
+        local_DNE_catch, DNE, positive_DNE, negative_DNE, _ = ariaDNE(mesh)
+        if len(meshes) == 1:
+            local_DNE = local_DNE_catch
         print("DNE for '" + files[i] + "': " + str(DNE))
         print("positive DNE for '" + files[i] + "': " + str(positive_DNE))
         print("negative DNE for '" + files[i] + "': " + str(negative_DNE))
@@ -201,6 +205,19 @@ def process_meshes(meshes, files, visualize=False, export_name=None):
             writer = csv.writer(csvfile)
             writer.writerow(['File', 'DNE', 'Positive DNE', 'Negative DNE'])
             writer.writerows(data)
+
+    if visualize and len(meshes) == 1:
+        from matplotlib import cm
+        from matplotlib.colors import LinearSegmentedColormap
+        from trimesh.transformations import translation_matrix
+        mesh = meshes[0]
+        normalized_values = (local_DNE - np.min(local_DNE)) / (np.max(local_DNE) - np.min(local_DNE))
+        colors = [(0, 0, 1), (247/255, 240/255, 213/255), (1, 0, 0)]  # Blue, White, Red
+        custom_cmap = LinearSegmentedColormap.from_list("custom_bwr", colors)
+        colors = custom_cmap(normalized_values)
+        mesh.visual.vertex_colors = np.hstack([(colors[:, :3] * 255).astype(np.uint8), np.full((len(mesh.vertices), 1), 1 * 255, dtype=np.uint8)])
+        mesh.fix_normals()
+        mesh.show() 
 
 
 if __name__ == '__main__':
@@ -239,14 +256,3 @@ if __name__ == '__main__':
     if export_name:
         print(f"Data exported to {export_name}")
 
-    if visualize and len(meshes) == 1:
-        from matplotlib import cm
-        from matplotlib.colors import LinearSegmentedColormap
-        from trimesh.transformations import translation_matrix
-        mesh = meshes[0]
-        normalized_values = (local_DNE - np.min(local_DNE)) / (np.max(local_DNE) - np.min(local_DNE))
-        colors = [(0, 0, 1), (247/255, 240/255, 213/255), (1, 0, 0)]  # Blue, White, Red
-        custom_cmap = LinearSegmentedColormap.from_list("custom_bwr", colors)
-        colors = custom_cmap(normalized_values)
-        mesh.visual.vertex_colors = np.hstack([(colors[:, :3] * 255).astype(np.uint8), np.full((len(mesh.vertices), 1), 1 * 255, dtype=np.uint8)])
-        mesh.show() 
