@@ -29,8 +29,8 @@ python signedAriaDNE.py /path/to/mesh.ply -v -export=results.csv
 ## Output
 
 The script outputs the following:
-- Console messages indicating processing status
-- (Optional) CSV file with columns: DNE, Positive DNE, Negative DNE
+- Output with DNE, positive DNE and negative DNE
+- (Optional) CSV file with columns: File, DNE, Positive DNE, Negative DNE
 - (Optional) Mesh visualization for single file inputs
 
 ## Notes
