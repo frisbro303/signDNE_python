@@ -3,7 +3,7 @@
 Run the script from the command line with the following syntax:
 
 ```
-python ariadne_script.py <path> [-v] [-export=<filename>]
+python signedAriaDNE.py <path> [-v] [-export=<filename>]
 ```
 
 Arguments:
@@ -14,16 +14,16 @@ Arguments:
 Examples:
 ```
 # Process a single file
-python ariadne_script.py /path/to/mesh.ply
+python signedAriaDNE.py /path/to/mesh.ply
 
 # Process a single file with visualization
-python ariadne_script.py /path/to/mesh.ply -v
+python signedAriaDNE.py /path/to/mesh.ply -v
 
 # Process a directory and export results
-python ariadne_script.py /path/to/mesh/directory -export=results.csv
+python signedAriaDNE.py /path/to/mesh/directory -export=results.csv
 
 # Process a single file with visualization and export
-python ariadne_script.py /path/to/mesh.ply -v -export=results.csv
+python signedAriaDNE.py /path/to/mesh.ply -v -export=results.csv
 ```
 
 ## Output
