@@ -1,5 +1,7 @@
 ## Usage
 
+Unfortunately export doesn't indclude names of files. This should be fixed.
+
 Run the script from the command line with the following syntax:
 
 ```
