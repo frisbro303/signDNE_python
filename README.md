@@ -3,7 +3,7 @@
 Run the script from the command line with the following syntax:
 
 ```
-python signedAriaDNE.py <path> [-v] [-export=<filename>]
+python signedAriaDNE.py <path> [-v] [--export=<filename>]
 ```
 
 Arguments:
@@ -20,10 +20,10 @@ python signedAriaDNE.py /path/to/mesh.ply
 python signedAriaDNE.py /path/to/mesh.ply -v
 
 # Process a directory and export results
-python signedAriaDNE.py /path/to/mesh/directory -export=results.csv
+python signedAriaDNE.py /path/to/mesh/directory --export=results.csv
 
 # Process a single file with visualization and export
-python signedAriaDNE.py /path/to/mesh.ply -v -export=results.csv
+python signedAriaDNE.py /path/to/mesh.ply -v --export=results.csv
 ```
 
 ## Output
