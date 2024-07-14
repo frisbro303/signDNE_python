@@ -7,7 +7,7 @@ Calculate Signed Aria DNE for PLY and OBJ mesh files.
 ## Usage
 
 ```
-signedAriaDNE.py [OPTIONS] INPUT
+signedAriaDNE.py INPUT [OPTIONS]
 ```
 
 ## Arguments
