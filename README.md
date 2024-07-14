@@ -19,9 +19,9 @@ signedAriaDNE.py INPUT [OPTIONS]
 - `-v, --visualize`: Enable visualization (only for single file inputs)
 - `-o, --output PATH`: Specify output path for results (CSV file for multiple inputs, or directory for single input)
 - `-r, --recursive`: Process subdirectories recursively
-- `-b, --bandwidth FLOAT`: Set the bandwidth for DNE calculation (default: 0.1)
+- `-b, --bandwidth FLOAT`: Set the bandwidth for DNE calculation (default: 0.08)
 - `-d, --distance-type [euclidean|geodesic]`: Specify the distance type for calculations (default: euclidean)
-- `-c, --cutoff FLOAT`: Set the cut-off threshold for DNE calculation (default: 2.0)
+- `-c, --cutoff FLOAT`: Set the cut-off threshold for DNE calculation (default: 0)
 - `--help`: Show this message and exit
 
 ## Examples
