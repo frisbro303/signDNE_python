@@ -66,6 +66,8 @@ Results can be saved to a CSV file or displayed in the console.
 
 ## Dependencies
 
+- scipy
+- open3d
 - numpy
 - pandas
 - trimesh
