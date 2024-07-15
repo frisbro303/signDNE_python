@@ -5,6 +5,10 @@ import trimesh
 import numpy as np
 import numpy.matlib
 import open3d as o3d
+import argparse
+from pathlib import Path
+import pandas as pd
+import sys
 
 
 np.set_printoptions(precision=15, floatmode='fixed')
@@ -44,7 +48,7 @@ def triangulation_to_adjacency_matrix(vertices, faces, numPoints):
     return A
 
 
-def ariaDNE(mesh, bandwidth=0.08, cut_thresh=0, dist_type='Euclidean', precomputed_dist=None):
+def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomputed_dist=None):
     '''
     This function computes the ariaDNE value of a mesh surface.
     ariaDNE is a robustly implemented algorithm for Dirichlet Normal
@@ -86,7 +90,7 @@ def ariaDNE(mesh, bandwidth=0.08, cut_thresh=0, dist_type='Euclidean', precomput
             vertex_normals[vertex] += face_normals[i]
 
     vertex_normals = trimesh.util.unitize(vertex_normals)
-    
+
     if mesh.is_watertight:
         filled_mesh = mesh
     else:
@@ -110,9 +114,9 @@ def ariaDNE(mesh, bandwidth=0.08, cut_thresh=0, dist_type='Euclidean', precomput
             d_dist = precomputed_dist
         else:
             raise TypeError("Variable precomputed_dist must be a square numpy array with size equal to the number of points")
-    elif dist_type == 'Geodesic':
+    elif distance_type == 'Geodesic':
         d_dist = dijkstra(triangulation_to_adjacency_matrix(points, faces, num_points), directed=False)
-    elif dist_type == 'Euclidean':
+    elif distance_type == 'Euclidean':
         d_dist = squareform(pdist(points))
     else:
         raise NameError("Provide valid precomputed_dist or set dist_type to either 'Geodeisic' or 'Euclidian'")
@@ -123,7 +127,7 @@ def ariaDNE(mesh, bandwidth=0.08, cut_thresh=0, dist_type='Euclidean', precomput
 
     # for each vertex in the mesh, estimate its curvature via PCA
     for jj in range(num_points):
-        neighbour = np.where(K[jj, :] > cut_thresh)[0]
+        neighbour = np.where(K[jj, :] > cutoff)[0]
         num_neighbours = len(neighbour)
         if num_neighbours <= 3:
             print('ARIADNE.m: Too few neighbor on vertex %d. \n' % jj)
@@ -164,7 +168,7 @@ def ariaDNE(mesh, bandwidth=0.08, cut_thresh=0, dist_type='Euclidean', precomput
         #cut_n = np.where(K[jj, :] > cut_off)[0]
         #neighbour_centroid = np.sum(points[cut_n, :], axis=0)/np.shape(cut_n)[0]
         
-        # determine if the centroid is inside or not in order find sign of curvature
+        # determine if the centroid is insidbae or not in order find sign of curvature
         inside = filled_mesh.ray.contains_points([neighbour_centroid])
         sign = int(inside)*2 - 1
         #print(sign)
@@ -185,74 +189,90 @@ def ariaDNE(mesh, bandwidth=0.08, cut_thresh=0, dist_type='Euclidean', precomput
     positive_DNE = np.sum(local_DNE[positive_indices])
     negative_DNE = np.sum(local_DNE[negative_indices]) 
 
-    return local_DNE, DNE, positive_DNE, negative_DNE, centroids
+    return local_DNE, DNE, positive_DNE, negative_DNE#, centroids
 
 
-def process_meshes(meshes, files, visualize=False, export_name=None):
-    data = []
-    local_DNE = None
-    for i, mesh in enumerate(meshes):
-        local_DNE_catch, DNE, positive_DNE, negative_DNE, _ = ariaDNE(mesh)
-        if len(meshes) == 1:
-            local_DNE = local_DNE_catch
-        print("DNE for '" + files[i] + "': " + str(DNE))
-        print("positive DNE for '" + files[i] + "': " + str(positive_DNE))
-        print("negative DNE for '" + files[i] + "': " + str(negative_DNE))
-        data.append([files[i], DNE, positive_DNE, negative_DNE])
-        
-    if export_name:
-        with open(export_name, 'w', newline='') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow(['File', 'DNE', 'Positive DNE', 'Negative DNE'])
-            writer.writerows(data)
+def visualize_mesh(mesh, local_DNE):
+    from matplotlib import cm
+    from matplotlib.colors import LinearSegmentedColormap
+    normalized_values = (local_DNE - np.min(local_DNE)) / (np.max(local_DNE) - np.min(local_DNE))
+    colors = [(0, 0, 1), (247/255, 240/255, 213/255), (1, 0, 0)]  # Blue, White, Red
+    custom_cmap = LinearSegmentedColormap.from_list("custom_bwr", colors)
+    colors = custom_cmap(normalized_values)
+    mesh.visual.vertex_colors = np.hstack([(colors[:, :3] * 255).astype(np.uint8), np.full((len(mesh.vertices), 1), 1 * 255, dtype=np.uint8)])
+    mesh.fix_normals()
+    mesh.show() 
 
-    if visualize and len(meshes) == 1:
-        from matplotlib import cm
-        from matplotlib.colors import LinearSegmentedColormap
-        from trimesh.transformations import translation_matrix
-        mesh = meshes[0]
-        normalized_values = (local_DNE - np.min(local_DNE)) / (np.max(local_DNE) - np.min(local_DNE))
-        colors = [(0, 0, 1), (247/255, 240/255, 213/255), (1, 0, 0)]  # Blue, White, Red
-        custom_cmap = LinearSegmentedColormap.from_list("custom_bwr", colors)
-        colors = custom_cmap(normalized_values)
-        mesh.visual.vertex_colors = np.hstack([(colors[:, :3] * 255).astype(np.uint8), np.full((len(mesh.vertices), 1), 1 * 255, dtype=np.uint8)])
-        mesh.fix_normals()
-        mesh.show() 
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Calculate Signed Aria DNE for PLY and OBJ mesh files.")
+    parser.add_argument("input", nargs='+', help="Path to .ply/.obj file(s) or directory containing mesh files")
+    parser.add_argument("-v", "--visualize", action="store_true", help="Enable visualization (only for single file inputs)")
+    parser.add_argument("-o", "--output", nargs='?', const="results.csv", default=None, help="Specify output path for results")
+    parser.add_argument("-b", "--bandwidth", type=float, default=0.08, help="Set the bandwidth for DNE calculation (default: 0.08)")
+    parser.add_argument("-d", "--distance-type", choices=['Euclidean', 'Geodesic'], default='Euclidean', help="Specify the distance type for calculations (default: Euclidean)")
+    parser.add_argument("-c", "--cutoff", type=float, default=0, help="Set the cut-off threshold for DNE calculation (default: 0)")
+    return parser.parse_args()
+
+
+def get_file_names(input_paths):
+    file_names = []
+    for path in input_paths:
+        p = Path(path)
+        if p.is_dir():
+            file_names.extend(p.glob('*'))
+        else:
+            file_names.append(p)
+    return [f for f in file_names if f.suffix in ('.ply', '.obj')]
+
+
+def safe_load(file):
+    try:
+        return trimesh.load(str(file))
+    except Exception as e:
+        print(f"Error loading {file}: {e}")
+        return None
+
+
+def process_meshes(meshes, args):
+    return [ariaDNE(mesh, bandwidth=args.bandwidth, cutoff=args.cutoff, distance_type=args.distance_type) for mesh in meshes]
+
+
+def create_dataframe(data, file_names):
+    df = pd.DataFrame(data, columns=["DNE", "positive DNE", "negative DNE"])
+    df["File"] = [str(f) for f in file_names]
+    return df[["File", "DNE", "positive DNE", "negative DNE"]]
+
+
+def output_results(df, output_file):
+    if output_file:
+        df.to_csv(output_file, index=False, float_format='%.16f')
+        print(f"Results saved to {output_file}")
+    else:
+        print(df.to_string(index=False, float_format=lambda x: f'{x:.16f}'))
+
+
+def main():
+    args = parse_arguments()
+    file_names = get_file_names(args.input)
+
+    if not file_names:
+        print("No .ply or .obj files found in the specified input(s).")
+        sys.exit(1)
+
+    if args.visualize and len(file_names) != 1:
+        print("Visualization only possible for single file inputs.")
+        sys.exit(1)
+
+    meshes = [mesh for mesh in map(safe_load, file_names) if mesh is not None]
+    values = process_meshes(meshes, args)
+
+    df = create_dataframe([v[1:] for v in values], file_names)
+    output_results(df, args.output)
+
+    if args.visualize:
+        visualize_mesh(meshes[0], values[0][0])
 
 
 if __name__ == '__main__':
-    import os
-    import sys
-    import csv
-    if len(sys.argv) < 2:
-        print("Usage: python script.py <path> [-v] [-export=<filename>]")
-        print("Note: -v (visualization) is only available for single file inputs")
-        sys.exit(1)
-
-    path = sys.argv[1]
-    visualize = '-v' in sys.argv
-    export_name = None
-
-    for arg in sys.argv:
-        if arg.startswith('--export='):
-            export_name = arg.split('=')[1]
-
-    if os.path.isfile(path):
-        files = [path]
-    elif os.path.isdir(path):
-        files = [os.path.join(path, f) for f in os.listdir(path) if f.endswith('.ply')]
-        if visualize:
-            print("Warning: Visualization (-v) is not available for folder inputs. Ignoring -v flag.")
-            visualize = False
-    else:
-        print(f"Error: '{path}' is not a valid file or directory")
-        sys.exit(1)
-
-
-    meshes = list(map(trimesh.load, files))
-
-    process_meshes(meshes, files, visualize, export_name)
-
-    if export_name:
-        print(f"Data exported to {export_name}")
-
+    main()
