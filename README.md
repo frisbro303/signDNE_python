@@ -1,56 +1,72 @@
-# CODE HAS NOT BEEN UPDATED ACCORDING TO THIS NEW DOCUMENTATION
+# Signed Aria DNE Calculator
 
-# signedAriaDNE.py
+This tool calculates the Signed DNE for 3d meshes. It provides options for visualization and customization of the calculation parameters.
 
-Calculate Signed Aria DNE for PLY and OBJ mesh files.
+## Features
+
+- Calculate Signed Aria DNE for multiple .ply or .obj files
+- Visualize results for single file inputs
+- Customize bandwidth, distance type, and cutoff threshold for calculations
+- Output results to CSV or display in console
 
 ## Usage
 
 ```
-signedAriaDNE.py INPUT [OPTIONS]
+python signedAriaDNE.py input [input] [-h] [-v] [-o [OUTPUT]] [-b BANDWIDTH] [-d {Euclidean,Geodesic}] [-c CUTOFF]
 ```
 
-## Arguments
+### Arguments
 
-- `INPUT`: Path to a single .ply/.obj file or a directory containing mesh files (required)
+- `input`: Path to .ply/.obj file(s) or directory containing mesh files
 
-## Options
+### Options
 
-- `-v, --visualize`: Enable visualization (only for single file inputs)
-- `-o, --output PATH`: Specify output path for results (CSV file for multiple inputs, or directory for single input)
-- `-r, --recursive`: Process subdirectories recursively
-- `-b, --bandwidth FLOAT`: Set the bandwidth for DNE calculation (default: 0.08)
-- `-d, --distance-type [euclidean|geodesic]`: Specify the distance type for calculations (default: euclidean)
-- `-c, --cutoff FLOAT`: Set the cut-off threshold for DNE calculation (default: 0)
-- `--help`: Show this message and exit
+- `-h`, `--help`: Show help message and exit
+- `-v`, `--visualize`: Enable visualization (only for single file inputs)
+- `-o [OUTPUT]`, `--output [OUTPUT]`: Specify output path for results. If output is off, calculated output will be outputed STDOUT.
+- `-b BANDWIDTH`, `--bandwidth BANDWIDTH`: Set the bandwidth for DNE calculation (default: 0.08)
+- `-d {Euclidean,Geodesic}`, `--distance-type {Euclidean,Geodesic}`: Specify the distance type for calculations (default: Euclidean)
+- `-c CUTOFF`, `--cutoff CUTOFF`: Set the cut-off threshold for DNE calculation (default: 0)
 
 ## Examples
 
-```bash
-# Process a single file
-signedAriaDNE.py mesh.ply
+1. Calculate DNE for a single file and visualize:
+   ```
+   python signedAriaDNE.py path/to/mesh.ply -v
+   ```
 
-# Process a single file with visualization
-signedAriaDNE.py mesh.obj -v
+2. Calculate DNE for multiple files and save results to CSV:
+   ```
+   python signedAriaDNE.py path/to/mesh1.obj path/to/mesh2.ply -o results.csv
+   ```
 
-# Process a directory and save results to a CSV file
-signedAriaDNE.py mesh_directory -o /path/to/results.csv
+3. Calculate DNE for all mesh files in a directory with custom bandwidth:
+   ```
+   python signedAriaDNE.py path/to/mesh/directory -b 0.1
+   ```
 
-# Process a single file with visualization and specify output directory
-signedAriaDNE.py mesh.ply -v -o ./output_dir/
+## Visualization
 
-# Process a directory recursively and save results to a CSV file
-signedAriaDNE.py mesh_directory -r -o results.csv
+When the `-v` or `--visualize` flag is used with a single input file, the tool will display a 3D visualization of the mesh. The mesh will be colored based on the normalized local DNE values, using a custom color map:
 
-# Process a single file with custom parameters
-signedAriaDNE.py mesh.ply -b 0.2 -d geodesic -c 1.5
-```
+- Blue: Low DNE values
+- White: Medium DNE values
+- Red: High DNE values
 
-## Notes
+## Output
 
-- Visualization (`-v`) is only available for single file inputs
-- When processing a directory, only .ply and .obj files will be processed; all other file types are ignored
-- Use `-r` for recursive processing of subdirectories
-- Files in formats other than .ply or .obj will be automatically ignored during folder processing
-- The bandwidth, distance type, and cut-off threshold affect the DNE calculation algorithm
-- For multiple inputs, the output (`-o`) should specify a CSV file; for single inputs, it can specify a directory
+The tool outputs the following values for each processed mesh:
+
+- File: Path to the input file
+- DNE: Overall Dirichlet Normal Energy
+- Positive DNE: Positive component of DNE
+- Negative DNE: Negative component of DNE
+
+Results can be saved to a CSV file or displayed in the console.
+
+## Dependencies
+
+- numpy
+- pandas
+- trimesh
+- matplotlib
