@@ -32,6 +32,10 @@ The tool outputs the following values for each processed mesh as coloumns:
 
 If the `-o` or `--output` flag is off, results will be outputed to STDOUT.
 
+## Visualization
+
+When the `-v` or `--visualize` flag is used with a single input file, the tool will display a 3D visualization of the mesh. The mesh will be colored based on the normalized local DNE values, color gradient from blue through white to red. Blue represents low DNE values and red represents high DNE values.
+
 ## Examples
 
 1. Calculate DNE for a single file and visualize:
@@ -48,6 +52,7 @@ If the `-o` or `--output` flag is off, results will be outputed to STDOUT.
    ```
    python signedAriaDNE.py path/to/mesh/directory -b 0.1
    ```
+
 
 
 ## Dependencies
