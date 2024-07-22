@@ -4,14 +4,10 @@ from scipy.sparse.csgraph import dijkstra
 import trimesh
 import numpy as np
 import numpy.matlib
-import open3d as o3d
 import argparse
 from pathlib import Path
 import pandas as pd
 import sys
-
-
-np.set_printoptions(precision=15, floatmode='fixed')
 
 
 def ComputeF2V(mesh):
@@ -26,13 +22,11 @@ def ComputeF2V(mesh):
     return F2V
 
 
-def Centralize(mesh, scale=None):
-    Center = np.mean(mesh.vertices, 0).reshape(1,3)
-    foo = np.matlib.repmat(Center, len(mesh.vertices), 1)
-    mesh.vertices -= foo
-    if scale != None:
+def Centralize(mesh, scale=True):
+    center = np.sum(mesh.vertices, 0)/(mesh.vertices.shape[0])
+    mesh.vertices -= center
+    if scale:
         mesh.vertices = mesh.vertices * np.sqrt(1 / mesh.area)
-    return mesh
 
 
 def triangulation_to_adjacency_matrix(vertices, faces, numPoints):
@@ -73,30 +67,22 @@ def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomput
         raise TypeError("mesh must be an instance of trimesh.base.Trimesh")
 
 
-    ## need to compute the entire surface
     V = mesh.vertices
-    mesh = Centralize(mesh, scale=True)
-    mesh.fill_holes()
-    #print(mesh.area)
+
+    Centralize(mesh, scale=True)
     face_area = mesh.area_faces
     F2V = ComputeF2V(mesh)
     vertex_area = (face_area.T @ F2V)/3
 
+
+    # Calculate non-weighted vertex normals
     face_normals = mesh.face_normals
     vertex_normals = np.zeros(mesh.vertices.shape)
 
     for i, face in enumerate(mesh.faces):
         for vertex in face:
             vertex_normals[vertex] += face_normals[i]
-
     vertex_normals = trimesh.util.unitize(vertex_normals)
-
-    if mesh.is_watertight:
-        filled_mesh = mesh
-    else:
-        filled_faces = np.asarray(o3d.t.geometry.TriangleMesh.from_legacy(mesh.as_open3d).fill_holes(hole_size=np.float64('inf')).to_legacy().triangles)
-        filled_mesh = trimesh.Trimesh(vertices=mesh.vertices, faces=filled_faces)
-    
 
     points = mesh.vertices
     faces = mesh.faces
@@ -121,12 +107,11 @@ def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomput
     else:
         raise NameError("Provide valid precomputed_dist or set dist_type to either 'Geodeisic' or 'Euclidian'")
 
-    # define the weight matrix
+
     K = np.exp(-d_dist ** 2 / bandwidth ** 2)
-    #K_n = np.exp(-d_dist ** 2 / bandwidth_n ** 2)
 
     # for each vertex in the mesh, estimate its curvature via PCA
-    for jj in range(num_points):
+    for jj in range(num_points):#range(4):#range(num_points):
         neighbour = np.where(K[jj, :] > cutoff)[0]
         num_neighbours = len(neighbour)
         if num_neighbours <= 3:
@@ -165,13 +150,10 @@ def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomput
         # Only added for debugging and visualizations
         centroids[jj] = neighbour_centroid
 
-        #cut_n = np.where(K[jj, :] > cut_off)[0]
-        #neighbour_centroid = np.sum(points[cut_n, :], axis=0)/np.shape(cut_n)[0]
-        
         # determine if the centroid is insidbae or not in order find sign of curvature
-        inside = filled_mesh.ray.contains_points([neighbour_centroid])
+        inside = mesh.ray.contains_points([neighbour_centroid])
         sign = int(inside)*2 - 1
-        #print(sign)
+
         # use the eigenvalue of that eigenvector to estimate the curvature
         lambda_ = d[k]
         curvature[jj] = (lambda_ / np.sum(d))*sign
@@ -221,8 +203,10 @@ def get_file_names(input_paths):
         p = Path(path)
         if p.is_dir():
             file_names.extend(p.glob('*'))
-        else:
+        elif p.is_file():
             file_names.append(p)
+        else:
+            print(str(p) + " is not a file a or a directory")
     return [f for f in file_names if f.suffix in ('.ply', '.obj')]
 
 
@@ -230,12 +214,8 @@ def safe_load(file):
     try:
         return trimesh.load(str(file))
     except Exception as e:
-        print(f"Error loading {file}: {e}")
+        print(e)
         return None
-
-
-def process_meshes(meshes, args):
-    return [ariaDNE(mesh, bandwidth=args.bandwidth, cutoff=args.cutoff, distance_type=args.distance_type) for mesh in meshes]
 
 
 def create_dataframe(data, file_names):
@@ -265,7 +245,9 @@ def main():
         sys.exit(1)
 
     meshes = [mesh for mesh in map(safe_load, file_names) if mesh is not None]
-    values = process_meshes(meshes, args)
+
+    values = [ariaDNE(mesh, bandwidth=args.bandwidth, cutoff=args.cutoff, \
+              distance_type=args.distance_type) for mesh in meshes]
 
     df = create_dataframe([v[1:] for v in values], file_names)
     output_results(df, args.output)
