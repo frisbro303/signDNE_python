@@ -10,7 +10,21 @@ python signedAriaDNE.py input [input] [-h] [-v] [-o [OUTPUT]] [-b BANDWIDTH] [-d
 
 ### Arguments
 
-- `input`: Path to .ply/.obj file(s) or directory containing mesh files
+- `input`: Path to .ply/.obj file(s) or directory containing mesh files.
+
+If the files are non-watertight, watertight versions of the file can be provided alongside.
+The watertight versions are required to end with "_watertight" before the suffix.
+For example:
+# Non-watertight
+```
+tooth.ply
+```
+# Watertight version
+```
+tooth_watertight.ply
+```
+
+Files ending with "_watertight" will not be processed individually. 
 
 ### Options
 
