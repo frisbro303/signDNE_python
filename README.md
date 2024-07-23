@@ -14,8 +14,8 @@ python signedAriaDNE.py input [input] [-h] [-v] [-o [OUTPUT]] [-b BANDWIDTH] [-d
 
 If the files are non-watertight, watertight versions may be provided alongside.
 The watertight versions are required to end with "_watertight" before the suffix.
-Files ending with "_watertight" will not be processed individually.
-For instance, given a file called `tooth.ply`, the watertight version should be named `tooth_watertight.ply`-
+For instance, given a file called `tooth.ply`, the watertight version should be named `tooth_watertight.ply`.
+Files ending with "_watertight" will NOT be processed individually.
 
 ### Options
 
