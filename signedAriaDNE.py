@@ -22,11 +22,16 @@ def ComputeF2V(mesh):
     return F2V
 
 
-def Centralize(mesh, scale=True):
+def Centralize(mesh, watertight_mesh, scale=True):
     center = np.sum(mesh.vertices, 0)/(mesh.vertices.shape[0])
     mesh.vertices -= center
+    watertight_mesh.vertices -= center
     if scale:
-        mesh.vertices = mesh.vertices * np.sqrt(1 / mesh.area)
+        scale_factor = np.sqrt(1 / mesh.area)
+        mesh.vertices = mesh.vertices * scale_factor 
+        # Only rescale if not already scaled
+        if not watertight_mesh is mesh:
+            watertight_mesh.vertices = watertight_mesh.vertices * scale_factor 
 
 
 def triangulation_to_adjacency_matrix(vertices, faces, numPoints):
@@ -42,7 +47,7 @@ def triangulation_to_adjacency_matrix(vertices, faces, numPoints):
     return A
 
 
-def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomputed_dist=None):
+def ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomputed_dist=None):
     '''
     This function computes the ariaDNE value of a mesh surface.
     ariaDNE is a robustly implemented algorithm for Dirichlet Normal
@@ -61,19 +66,21 @@ def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomput
           Shan Shan (sshan.asc@gmail.com)
           June 09, 2023
     '''
-
+    #print(mesh)
+    #print(watertight_mesh)
     
-    if not isinstance(mesh, trimesh.base.Trimesh):
+    if not (isinstance(mesh, trimesh.base.Trimesh) or 
+            isinstance(mesh, trimesh.base.Trimesh)):
         raise TypeError("mesh must be an instance of trimesh.base.Trimesh")
 
+    if watertight_mesh == None:
+        watertight_mesh = mesh
+    
+    Centralize(mesh, watertight_mesh, scale=True)
 
-    V = mesh.vertices
-
-    Centralize(mesh, scale=True)
     face_area = mesh.area_faces
     F2V = ComputeF2V(mesh)
     vertex_area = (face_area.T @ F2V)/3
-
 
     # Calculate non-weighted vertex normals
     face_normals = mesh.face_normals
@@ -92,6 +99,7 @@ def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomput
 
     # Only added for debugging and visualizations
     centroids = np.zeros((num_points, 3))
+
 
     d_dist = None 
 
@@ -151,7 +159,7 @@ def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomput
         centroids[jj] = neighbour_centroid
 
         # determine if the centroid is insidbae or not in order find sign of curvature
-        inside = mesh.ray.contains_points([neighbour_centroid])
+        inside = watertight_mesh.ray.contains_points([neighbour_centroid])
         sign = int(inside)*2 - 1
 
         # use the eigenvalue of that eigenvector to estimate the curvature
@@ -197,22 +205,39 @@ def parse_arguments():
     return parser.parse_args()
 
 
+def has_postfix(file):
+    parts = file.stem.split('_')
+    return parts[-1] == 'watertight'
+
+
 def get_file_names(input_paths):
-    file_names = []
+    # Find paths of all given files and files in folders
+    initial_paths = []
     for path in input_paths:
         p = Path(path)
         if p.is_dir():
-            file_names.extend(p.glob('*'))
+            initial_paths.extend(p.glob('*'))
         elif p.is_file():
-            file_names.append(p)
+            initial_paths.append(p)
         else:
             print(str(p) + " is not a file a or a directory")
-    return [f for f in file_names if f.suffix in ('.ply', '.obj')]
+
+    files = [Path(f) for f in initial_paths if Path(f).suffix in ('.ply', '.obj')]
+
+    # Only load files that do not have _watertight postfix
+    files = [f for f in files if not has_postfix(f)]
+
+    return files
 
 
 def safe_load(file):
     try:
-        return trimesh.load(str(file))
+        # Check if a watertight version exists
+        watertight_file = file.with_stem(str(file.stem) + "_watertight")
+        if watertight_file.exists():
+            return (trimesh.load(str(file)), trimesh.load(str(watertight_file)))
+        else:
+            return (trimesh.load(str(file)), None)
     except Exception as e:
         print(e)
         return None
@@ -241,19 +266,20 @@ def main():
         sys.exit(1)
 
     if args.visualize and len(file_names) != 1:
-        print("Visualization only possible for single file inputs.")
+        print("Visualization only possible for single file inputs. Ignoring flag")
         sys.exit(1)
 
     meshes = [mesh for mesh in map(safe_load, file_names) if mesh is not None]
 
-    values = [ariaDNE(mesh, bandwidth=args.bandwidth, cutoff=args.cutoff, \
-              distance_type=args.distance_type) for mesh in meshes]
+    values = [ariaDNE(mesh, watertight_mesh, bandwidth=args.bandwidth, 
+                      cutoff=args.cutoff, distance_type=args.distance_type) \
+              for (mesh, watertight_mesh) in meshes]
 
     df = create_dataframe([v[1:] for v in values], file_names)
     output_results(df, args.output)
 
     if args.visualize:
-        visualize_mesh(meshes[0], values[0][0])
+        visualize_mesh(meshes[0][0], values[0][0])
 
 
 if __name__ == '__main__':
