@@ -16,7 +16,7 @@ If the files are non-watertight, watertight versions of the file can be provided
 The watertight versions are required to end with "_watertight" before the suffix.
 Files ending with "_watertight" will not be processed individually.
 
-#### Example
+#### File naming example
 Non-watertight version:
 ```
 tooth.ply
