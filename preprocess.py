@@ -8,11 +8,6 @@ from pathlib import Path
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Preprocess files for use in signed DNE python package. Fill holes, remove unreferenced vertices, etc...")
     parser.add_argument("input", nargs='+', help="Path to .ply/.obj file(s) or directory containing mesh files")
-    #parser.add_argument("-v", "--visualize", action="store_true", help="Enable visualization (only for single file inputs)")
-    #parser.add_argument("-o", "--output", nargs='?', const="results.csv", default=None, help="Specify output path for results")
-    #parser.add_argument("-b", "--bandwidth", type=float, default=0.08, help="Set the bandwidth for DNE calculation (default: 0.08)")
-    #parser.add_argument("-d", "--distance-type", choices=['Euclidean', 'Geodesic'], default='Euclidean', help="Specify the distance type for calculations (default: Euclidean)")
-    #parser.add_argument("-c", "--cutoff", type=float, default=0, help="Set the cut-off threshold for DNE calculation (default: 0)")
     return parser.parse_args()
 
 
