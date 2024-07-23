@@ -1,4 +1,4 @@
-# Signed Aria DNE Calculator
+# Signed Aria DNE CLI
 
 This tool calculates the Signed DNE for 3d meshes. It provides options for visualization and customization of the calculation parameters.
 
@@ -12,19 +12,10 @@ python signedAriaDNE.py input [input] [-h] [-v] [-o [OUTPUT]] [-b BANDWIDTH] [-d
 
 - `input`: Path to .ply/.obj file(s) or directory containing mesh files.
 
-If the files are non-watertight, watertight versions of the file can be provided alongside.
+If the files are non-watertight, watertight versions may be provided alongside.
 The watertight versions are required to end with "_watertight" before the suffix.
 Files ending with "_watertight" will not be processed individually.
-
-#### File naming example
-Non-watertight version:
-```
-tooth.ply
-```
-Watertight version:
-```
-tooth_watertight.ply
-```
+For instance, given a file called `tooth.ply`, the watertight version should be named `tooth_watertight.ply`-
 
 ### Options
 
