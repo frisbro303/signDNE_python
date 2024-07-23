@@ -1,4 +1,4 @@
-# Signed Aria DNE CLI
+# Signed ariaDNE CLI
 
 This tool calculates the Signed DNE for 3d meshes. It provides options for visualization and customization of the calculation parameters.
 
