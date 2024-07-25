@@ -58,17 +58,17 @@ When the `-v` or `--visualize` flag is used with a single input file, the tool w
 
 1. Calculate DNE for a single file and visualize:
    ```
-   python signedAriaDNE.py path/to/mesh.ply -v
+   python src/signed_ariaDNE_cli.py path/to/mesh.ply -v
    ```
 
 2. Calculate DNE for multiple files and save results to CSV:
    ```
-   python signedAriaDNE.py path/to/mesh1.obj path/to/mesh2.ply -o results.csv
+   python src/signed_ariaDNE_cli.py path/to/mesh1.obj path/to/mesh2.ply -o results.csv
    ```
 
 3. Calculate DNE for all mesh files in a directory with custom bandwidth:
    ```
-   python signedAriaDNE.py path/to/mesh/directory -b 0.1
+   python src/signed_ariaDNE_cli.py path/to/mesh/directory -b 0.1
    ```
 
 
@@ -88,7 +88,7 @@ When the `-v` or `--visualize` flag is used with a single input file, the tool w
 ### Usage
 
 ```
-python signedAriaDNE.py input [input] [-h] [-w]
+python src/preprocess.py input [input] [-h] [-w]
 ```
 
 #### Arguments
