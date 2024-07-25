@@ -11,6 +11,7 @@ This tool calculates the Signed DNE for 3d meshes. It provides options for visua
 ## Introduction
 
 ## Command line interface
+-- description go here
 ### Usage
 
 ```
@@ -78,3 +79,40 @@ When the `-v` or `--visualize` flag is used with a single input file, the tool w
 - matplotlib
 
 ## Preprocessing tool
+-- description goes here.
+### Usage
+
+```
+python signedAriaDNE.py input [input] [-h] [-w]
+```
+
+#### Arguments
+
+- `input`: Path to .ply/.obj file(s) or directory containing mesh files.
+
+
+#### Options
+
+- `-h`, `--help`: Show help message and exit
+- `-w`, `--watertight` : Generate a watertight version for each mesh ending in "_watertight" before the final suffix.
+
+### Examples
+
+1. Preprocess one file and generate a watertight version:
+   ```
+   python preprocess.py path/to/non-watertight-mesh.ply -w
+   ```
+
+2. Preprocessing multiple files.
+   ```
+   python signedAriaDNE.py path/to/mesh1.obj path/to/mesh2.ply
+   ```
+
+3. Preprocessing files in a folder and generate watertigt versions:
+   ```
+   python signedAriaDNE.py path/to/mesh/directory --watertight
+   ```
+
+### Dependencies
+
+- pymeshlab
