@@ -93,7 +93,7 @@ def main():
     # Get sucessfully loaded files and file names
     load = [mesh for mesh in map(safe_load, file_names) if mesh is not None]
     # get meshes from loaded files
-    meshes = [(m[1], m[1]) for m in load]
+    meshes = [(m[0], m[1]) for m in load]
     file_names = [m[2] for m in load]
 
     values = [ariaDNE(mesh, watertight_mesh, bandwidth=args.bandwidth, 
