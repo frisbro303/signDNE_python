@@ -1,4 +1,4 @@
-# Signed ariaDNE CLI
+# Signed ariaDNE
 A python package for robustly computing DNE and signedDNE
 
 ## Index
