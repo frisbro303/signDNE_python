@@ -21,8 +21,8 @@ def visualize_mesh(mesh, local_DNE):
 
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="Calculate Signed Aria DNE for PLY and OBJ mesh files.")
-    parser.add_argument("input", nargs='+', help="Path to .ply/.obj file(s) or directory containing mesh files")
+    parser = argparse.ArgumentParser(description="Calculate Signed Aria DNE 3d meshes.")
+    parser.add_argument("input", nargs='+', help="Path to mesh file(s) or directory containing mesh files")
     parser.add_argument("-v", "--visualize", action="store_true", help="Enable visualization (only for single file inputs)")
     parser.add_argument("-o", "--output", nargs='?', const="results.csv", default=None, help="Specify output path for results")
     parser.add_argument("-b", "--bandwidth", type=float, default=0.08, help="Set the bandwidth for DNE calculation (default: 0.08)")
@@ -37,23 +37,18 @@ def has_postfix(file):
 
 
 def get_file_names(input_paths):
-    # Find paths of all given files and files in folders
-    initial_paths = []
+    file_names = []
     for path in input_paths:
         p = Path(path)
         if p.is_dir():
-            initial_paths.extend(p.rglob('*'))
+            file_names.extend(p.rglob('*'))
         elif p.is_file():
-            initial_paths.append(p)
+            file_names.append(p)
         else:
             print(str(p) + " is not a file a or a directory")
 
-    files = [Path(f) for f in initial_paths if Path(f).suffix in ('.ply', '.obj')]
-
-    # Only load files that do not have _watertight postfix
-    files = [f for f in files if not has_postfix(f)]
-
-    return files
+    # Only return paths that are files and do not have _watertight ending 
+    return [f for f in file_names if f.is_file() and not has_postfix(f)]#[f for f in file_names if f.suffix in ('.ply', '.obj')]
 
 
 def safe_load(file):
@@ -61,9 +56,9 @@ def safe_load(file):
         # Check if a watertight version exists
         watertight_file = file.with_stem(str(file.stem) + "_watertight")
         if watertight_file.exists():
-            return (trimesh.load(str(file)), trimesh.load(str(watertight_file)))
+            return (trimesh.load(str(file)), trimesh.load(str(watertight_file)), file)
         else:
-            return (trimesh.load(str(file)), None)
+            return (trimesh.load(str(file)), None, file)
     except Exception as e:
         print(e)
         return None
@@ -88,14 +83,18 @@ def main():
     file_names = get_file_names(args.input)
 
     if not file_names:
-        print("No .ply or .obj files found in the specified input(s).")
+        print("No files found in the specified input(s).")
         sys.exit(1)
 
     if args.visualize and len(file_names) != 1:
         print("Visualization only possible for single file inputs. Ignoring flag")
         sys.exit(1)
-
-    meshes = [mesh for mesh in map(safe_load, file_names) if mesh is not None]
+   
+    # Get sucessfully loaded files and file names
+    load = [mesh for mesh in map(safe_load, file_names) if mesh is not None]
+    # get meshes from loaded files
+    meshes = [(m[1], m[1]) for m in load]
+    file_names = [m[2] for m in load]
 
     values = [ariaDNE(mesh, watertight_mesh, bandwidth=args.bandwidth, 
                       cutoff=args.cutoff, distance_type=args.distance_type) \
