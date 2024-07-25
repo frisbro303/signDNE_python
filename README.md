@@ -40,10 +40,10 @@ Files ending with "_watertight" will NOT be processed individually.
 
 The tool outputs the following values for each processed mesh as coloumns:
 
-- File: Path to the input file
-- DNE: Overall DNE
-- Positive DNE: Positive component of DNE
-- Negative DNE: Negative component of DNE
+- File name
+- DNE
+- PPositive component of DNE
+- Negative component of DNE
 
 If the `-o` or `--output` flag is off, results will be outputed to STDOUT.
 
