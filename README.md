@@ -7,12 +7,10 @@ A python package for robustly computing DNE and signedDNE
 3. [Command line interface](#Command-line-interface)
 4. [Preprocessing tool](#Preprocessing-tool)
 ## Introduction
-The package can be used as a library as well as command line interface.
-The function calculates the DNE and signedDNE for a surface
-```
-ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomputed_dist=None)
-```
-
+The package consists of 3 files
+- `signed_ariaDNE.py` : File containing the function `ariaDNE` for calculating the DNE and signed DNE of a shape.
+- `signe_ariaDNE_cli.py` : Command line interface for the `ariaDNE` function.
+- `preprocess.py` : Script for doing simple cleanups and generating watertight version of meshes.
 
 ## Command line interface
 -- description go here
@@ -85,6 +83,8 @@ When the `-v` or `--visualize` flag is used with a single input file, the tool w
 
 ## Preprocessing tool
 -- description goes here.
+- removing duplicate faces and vertices
+- 
 ### Usage
 
 ```
