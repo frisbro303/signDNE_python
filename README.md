@@ -1,6 +1,14 @@
 # Signed ariaDNE CLI
 
 This tool calculates the Signed DNE for 3d meshes. It provides options for visualization and customization of the calculation parameters.
+# Index
+
+## Index
+1. [Introduction](#introduction)
+2. [Install](#install)
+3. [Command line interface documentation](#important-notes)
+4. [Preprocessing tool documentation](#preprocessing)
+
 
 ## Usage
 
