@@ -6,8 +6,8 @@ from pathlib import Path
 
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="Preprocess files for use in signed DNE python package. Fill holes, remove unreferenced vertices, etc...")
-    parser.add_argument("input", nargs='+', help="Path to .ply/.obj file(s) or directory containing mesh files")
+    parser = argparse.ArgumentParser(description="Preprocess files for use in signed DNE python package. Generate watertight versiosn and clean up")
+    parser.add_argument("input", nargs='+', help="Path to mesh or directory containing mesh files")
     parser.add_argument("-w", "--watertight", action="store_true", help="Generate watertight version of meshes")
     return parser.parse_args()
 
@@ -53,7 +53,7 @@ def main():
     print(file_names)
 
     if not file_names:
-        print("No .ply or .obj files found in the specified input(s).")
+        print("No files found in the specified input(s).")
         sys.exit(1)
     
     num_processed = len(file_names)
