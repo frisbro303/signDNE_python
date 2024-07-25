@@ -6,17 +6,18 @@ This tool calculates the Signed DNE for 3d meshes. It provides options for visua
 ## Index
 1. [Introduction](#introduction)
 2. [Install](#install)
-3. [Command line interface documentation](#important-notes)
+3. [Command line interface](#Command-line-interface)
 4. [Preprocessing tool documentation](#preprocessing)
+## Introduction
 
-
-## Usage
+## Command line interface
+### Usage
 
 ```
 python signedAriaDNE.py input [input] [-h] [-v] [-o [OUTPUT]] [-b BANDWIDTH] [-d {Euclidean,Geodesic}] [-c CUTOFF]
 ```
 
-### Arguments
+#### Arguments
 
 - `input`: Path to .ply/.obj file(s) or directory containing mesh files.
 
@@ -25,7 +26,7 @@ The watertight versions are required to end with "_watertight" before the suffix
 For instance, given a file called `tooth.ply`, the watertight version should be named `tooth_watertight.ply`.
 Files ending with "_watertight" will NOT be processed individually.
 
-### Options
+#### Options
 
 - `-h`, `--help`: Show help message and exit
 - `-v`, `--visualize`: Visualize 3d mesh colored by normalized local DNE values (only for single file inputs)
@@ -34,7 +35,7 @@ Files ending with "_watertight" will NOT be processed individually.
 - `-d {Euclidean,Geodesic}`, `--distance-type {Euclidean,Geodesic}`: Specify the distance type for calculations (default: Euclidean)
 - `-c CUTOFF`, `--cutoff CUTOFF`: Set the cut-off threshold for DNE calculation (default: 0)
 
-## Output
+### Output
 
 The tool outputs the following values for each processed mesh as coloumns:
 
@@ -45,11 +46,11 @@ The tool outputs the following values for each processed mesh as coloumns:
 
 If the `-o` or `--output` flag is off, results will be outputed to STDOUT.
 
-## Visualization
+### Visualization
 
 When the `-v` or `--visualize` flag is used with a single input file, the tool will display a 3D visualization of the mesh. The mesh will be colored based on the normalized local DNE values, color gradient from blue through white to red. Blue represents low DNE values and red represents high DNE values.
 
-## Examples
+### Examples
 
 1. Calculate DNE for a single file and visualize:
    ```
@@ -68,7 +69,7 @@ When the `-v` or `--visualize` flag is used with a single input file, the tool w
 
 
 
-## Dependencies
+### Dependencies
 
 - scipy
 - numpy
