@@ -7,7 +7,7 @@ This tool calculates the Signed DNE for 3d meshes. It provides options for visua
 1. [Introduction](#introduction)
 2. [Install](#install)
 3. [Command line interface](#Command-line-interface)
-4. [Preprocessing tool documentation](#preprocessing)
+4. [Preprocessing tool](#Preprocessing-tool)
 ## Introduction
 
 ## Command line interface
