@@ -1,4 +1,5 @@
-import pymeshlab import os
+import pymeshlab
+import os
 import sys
 import argparse
 from pathlib import Path
@@ -21,7 +22,7 @@ def get_file_names(input_paths):
             file_names.append(p)
         else:
             print(str(p) + " is not a file a or a directory")
-    return [f for f in file_names if f.suffix in ('.ply', '.obj')]
+    return [f for f in file_names if f.is_file()]#[f for f in file_names if f.suffix in ('.ply', '.obj')]
 
 
 def preprocess_file(file_name, generate_watertight):
@@ -49,19 +50,24 @@ def preprocess_file(file_name, generate_watertight):
 def main():
     args = parse_arguments()
     file_names = get_file_names(args.input)
+    print(file_names)
 
     if not file_names:
         print("No .ply or .obj files found in the specified input(s).")
         sys.exit(1)
-
+    
+    num_processed = len(file_names)
     for file_name in file_names:
-        print(file_name)
-        preprocess_file(str(file_name), args.watertight)
+        try:
+            preprocess_file(str(file_name), args.watertight)
+        except Exception as e:
+            num_processed -= 1
+            print("Failed to preprocess " + str(file_name) + ": " + str(e))
     
     if args.watertight:
-        print("Cleaned and generated watertight versions of " + str(len(file_names)) + " files")
+        print("Cleaned and generated watertight versions of " + str(num_processed) + " files")
     else:
-        print("Cleaned " + str(len(file_names)) + " files")
+        print("Cleaned " + str(num_processed) + " files")
 
 
 if __name__ == '__main__':
