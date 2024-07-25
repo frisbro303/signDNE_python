@@ -3,11 +3,6 @@ from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
 import trimesh
 import numpy as np
-import numpy.matlib
-import argparse
-from pathlib import Path
-import pandas as pd
-import sys
 
 
 def ComputeF2V(mesh):
