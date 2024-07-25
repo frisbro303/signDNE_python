@@ -7,11 +7,14 @@ A python package for robustly computing DNE and signedDNE
 3. [Command line interface](#Command-line-interface)
 4. [Preprocessing tool](#Preprocessing-tool)
 ## Introduction
-
--- description goes here. I.E. use as library, use of command line interface, preprocessing bla. bla. bla.
+The package consists of 3 files
+- `signed_ariaDNE.py` : File containing the function `ariaDNE` for calculating the DNE and signed DNE of a shape, which can be imported as a library or used through the command line interface. 
+- `signe_ariaDNE_cli.py` : Command line interface for the `ariaDNE` function.
+- `preprocess.py` : Script for doing simple cleanups and generating watertight version of meshes.
 
 ## Command line interface
 -- description go here
+
 ### Usage
 
 ```
@@ -40,10 +43,10 @@ Files ending with "_watertight" will NOT be processed individually.
 
 The tool outputs the following values for each processed mesh as coloumns:
 
-- File: Path to the input file
-- DNE: Overall Dirichlet Normal Energy
-- Positive DNE: Positive component of DNE
-- Negative DNE: Negative component of DNE
+- File name
+- DNE
+- PPositive component of DNE
+- Negative component of DNE
 
 If the `-o` or `--output` flag is off, results will be outputed to STDOUT.
 
@@ -80,6 +83,8 @@ When the `-v` or `--visualize` flag is used with a single input file, the tool w
 
 ## Preprocessing tool
 -- description goes here.
+- removing duplicate faces and vertices
+- 
 ### Usage
 
 ```
