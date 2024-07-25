@@ -1,5 +1,4 @@
-import pymeshlab
-import os
+import pymeshlab import os
 import sys
 import argparse
 from pathlib import Path
@@ -17,7 +16,7 @@ def get_file_names(input_paths):
     for path in input_paths:
         p = Path(path)
         if p.is_dir():
-            file_names.extend(p.glob('*'))
+            file_names.extend(p.rglob('*'))
         elif p.is_file():
             file_names.append(p)
         else:
