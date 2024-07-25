@@ -41,7 +41,7 @@ Files ending with "_watertight" will NOT be processed individually.
 The tool outputs the following values for each processed mesh as coloumns:
 
 - File: Path to the input file
-- DNE: Overall Dirichlet Normal Energy
+- DNE: Overall DNE
 - Positive DNE: Positive component of DNE
 - Negative DNE: Negative component of DNE
 
