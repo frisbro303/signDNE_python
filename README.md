@@ -22,7 +22,7 @@ python src/signed_ariaDNE_cli.py input [input] [-h] [-v] [-o [OUTPUT]] [-b BANDW
 
 #### Arguments
 
-- `input`: Path to .ply/.obj file(s) or directory containing mesh files.
+- `input`: Path to file(s) or directory containing mesh files.
 
 If the files are non-watertight, watertight versions may be provided alongside.
 The watertight versions are required to end with "_watertight" before the suffix.
