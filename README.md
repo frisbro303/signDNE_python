@@ -12,6 +12,10 @@ A python package for robustly computing DNE and signedDNE
 
 ## Command line interface
 -- description go here
+```
+ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomputed_dist=None)
+```
+Calculates the local signed DNE for each vertex, the DNE, the positive component of the DNE and the negative component of the DNE.
 ### Usage
 
 ```
