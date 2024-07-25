@@ -13,10 +13,10 @@ The package consists of 3 files:
 - `src/preprocess.py` : Script for doing simple cleanups and generating watertight version of meshes.
   
 ## Command line interface
--- description go here
+Command line interface for the `ariaDNE` function.
 
 ### Usage
-
+OBS! Currently CLI only works for ply or obj files.
 ```
 python src/signed_ariaDNE_cli.py input [input] [-h] [-v] [-o [OUTPUT]] [-b BANDWIDTH] [-d {Euclidean,Geodesic}] [-c CUTOFF]
 ```
@@ -86,7 +86,7 @@ When the `-v` or `--visualize` flag is used with a single input file, the tool w
 - removing duplicate faces and vertices
 - 
 ### Usage
-
+OBS! Currently preprocessing is only available for ply or obj files.
 ```
 python src/preprocess.py input [input] [-h] [-w]
 ```
