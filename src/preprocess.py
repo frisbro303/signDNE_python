@@ -50,7 +50,6 @@ def preprocess_file(file_name, generate_watertight):
 def main():
     args = parse_arguments()
     file_names = get_file_names(args.input)
-    print(file_names)
 
     if not file_names:
         print("No files found in the specified input(s).")
