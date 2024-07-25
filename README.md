@@ -2,16 +2,16 @@
 A python package for robustly computing DNE and signedDNE
 
 ## Index
-1. [Signed ariaDNE python package](#Signed-ariaDNE-python-package)
+1. [Package description](#Package-description)
 2. [Command line interface](#Command-line-interface)
 3. [Preprocessing tool](#Preprocessing-tool)
-## Signed ariaDNE python package
+## Package description
 The package is intended for use as a library in a normal python environment or use through the dedicated command line interface.
 The package consists of 3 files:
 - `src/signed_ariaDNE.py` : File containing the function `ariaDNE` for calculating the DNE and signed DNE of a shape, which can be imported as a library or used through the command line interface. 
 - `src/signed_ariaDNE_cli.py` : Command line interface for the `ariaDNE` function.
 - `src/preprocess.py` : Script for doing simple cleanups and generating watertight version of meshes.
-
+  
 ## Command line interface
 -- description go here
 
