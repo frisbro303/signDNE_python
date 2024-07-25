@@ -18,7 +18,7 @@ The package consists of 3 files:
 ### Usage
 
 ```
-python signedAriaDNE.py input [input] [-h] [-v] [-o [OUTPUT]] [-b BANDWIDTH] [-d {Euclidean,Geodesic}] [-c CUTOFF]
+python src/signed_ariaDNE_cli.py input [input] [-h] [-v] [-o [OUTPUT]] [-b BANDWIDTH] [-d {Euclidean,Geodesic}] [-c CUTOFF]
 ```
 
 #### Arguments
