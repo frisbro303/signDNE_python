@@ -1,9 +1,6 @@
-from scipy.spatial.distance import pdist, squareform
-from scipy.sparse import csr_matrix
-from scipy.sparse.csgraph import dijkstra
 import trimesh
-import numpy as np
 import numpy.matlib
+import numpy as np
 import argparse
 from pathlib import Path
 import pandas as pd
@@ -45,7 +42,7 @@ def get_file_names(input_paths):
     for path in input_paths:
         p = Path(path)
         if p.is_dir():
-            initial_paths.extend(p.glob('*'))
+            initial_paths.extend(p.rglob('*'))
         elif p.is_file():
             initial_paths.append(p)
         else:
