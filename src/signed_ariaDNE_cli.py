@@ -48,7 +48,7 @@ def get_file_names(input_paths):
             print(str(p) + " is not a file a or a directory")
 
     # Only return paths that are files and do not have _watertight ending 
-    return [f for f in file_names if f.is_file() and not has_postfix(f)]#[f for f in file_names if f.suffix in ('.ply', '.obj')]
+    return [f for f in file_names if f.is_file() and not has_postfix(f)]
 
 
 def safe_load(file):
