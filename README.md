@@ -7,13 +7,12 @@ A python package for robustly computing DNE and signedDNE
 3. [Command line interface](#Command-line-interface)
 4. [Preprocessing tool](#Preprocessing-tool)
 ## Introduction
-
--- description goes here. I.E. use as library, use of command line interface, preprocessing bla. bla. bla.
-The functionality is contained in the function:
+The package can be used as a library as well as command line interface.
+The function
 ```
 ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomputed_dist=None)
 ```
-The function calculates the local signed DNE for each vertex, the DNE, the positive component of the DNE and the negative component of the DNE.
+calculates the local signed DNE for each vertex, the DNE, the positive component of the DNE and the negative component of the DNE.
 
 ## Command line interface
 -- description go here
