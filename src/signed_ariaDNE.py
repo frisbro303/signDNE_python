@@ -66,9 +66,7 @@ def ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type=
           Shan Shan (sshan.asc@gmail.com)
           June 09, 2023
     '''
-    #print(mesh)
-    #print(watertight_mesh)
-    
+
     if not (isinstance(mesh, trimesh.base.Trimesh) or 
             isinstance(mesh, trimesh.base.Trimesh)):
         raise TypeError("mesh must be an instance of trimesh.base.Trimesh")
