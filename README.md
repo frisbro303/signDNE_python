@@ -8,11 +8,11 @@ A python package for robustly computing DNE and signedDNE
 4. [Preprocessing tool](#Preprocessing-tool)
 ## Introduction
 The package can be used as a library as well as command line interface.
-The function
+The function calculates the DNE and signedDNE for a surface
 ```
 ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomputed_dist=None)
 ```
-calculates the local signed DNE for each vertex, the DNE, the positive component of the DNE and the negative component of the DNE.
+
 
 ## Command line interface
 -- description go here
