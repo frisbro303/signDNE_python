@@ -26,7 +26,6 @@ If the files are non-watertight, watertight versions may be provided alongside.
 The watertight versions are required to end with "_watertight" before the suffix.
 For instance, given a file called `tooth.ply`, the watertight version should be named `tooth_watertight.ply`.
 Files ending with "_watertight" will NOT be processed individually.
-Watertight meshes can be generated using the (preprocessing tool)(#Preprocessing-tool).
 
 #### Options
 
