@@ -1,6 +1,5 @@
 # Signed ariaDNE CLI
 A python package for robustly computing DNE and signedDNE
-# Index
 
 ## Index
 1. [Introduction](#introduction)
@@ -8,6 +7,8 @@ A python package for robustly computing DNE and signedDNE
 3. [Command line interface](#Command-line-interface)
 4. [Preprocessing tool](#Preprocessing-tool)
 ## Introduction
+
+-- description goes here. I.E. use as library, use of command line interface, preprocessing bla. bla. bla.
 
 ## Command line interface
 -- description go here
