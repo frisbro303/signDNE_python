@@ -3,15 +3,23 @@ A python package for robustly computing DNE and signedDNE
 
 ## Index
 1. [Package description](#Package-description)
-2. [Command line interface](#Command-line-interface)
-3. [Preprocessing tool](#Preprocessing-tool)
+2. [Signed ariaDNE](#Signed-ariaDNE)
+3. [Command line interface](#Command-line-interface)
+4. [Preprocessing tool](#Preprocessing-tool)
 ## Package description
 The package is intended for use as a library in a normal python environment or use through the dedicated command line interface.
 The package consists of 3 files:
 - `src/signed_ariaDNE.py` : File containing the function `ariaDNE` for calculating the DNE and signed DNE of a shape, which can be imported as a library or used through the command line interface. 
 - `src/signed_ariaDNE_cli.py` : Command line interface for the `ariaDNE` function.
 - `src/preprocess.py` : Script for doing simple cleanups and generating watertight version of meshes.
-  
+
+## Signed ariaDNE
+### Dependencies
+
+- trimesh
+- numpy
+- scipy
+
 ## Command line interface
 Command line interface for the `ariaDNE` function.
 
@@ -74,16 +82,17 @@ When the `-v` or `--visualize` flag is used with a single input file, the tool w
 
 ### Dependencies
 
-- scipy
+- trimesh
 - numpy
 - pandas
-- trimesh
-- matplotlib
+- signed_ariaDNE
 
 ## Preprocessing tool
--- description goes here.
+This processing tool generates watertight mesh version as well as a simple clean up:
 - removing duplicate faces and vertices
-- 
+- remove folded faces.
+- remove null faces
+- remove unreferenced vertices
 ### Usage
 ```
 python src/preprocess.py input [input] [-h] [-w]
@@ -108,12 +117,12 @@ python src/preprocess.py input [input] [-h] [-w]
 
 2. Preprocessing multiple files.
    ```
-   python signedAriaDNE.py path/to/mesh1.obj path/to/mesh2.ply
+   python preprocess.py path/to/mesh1.obj path/to/mesh2.ply
    ```
 
 3. Preprocessing files in a folder and generate watertigt versions:
    ```
-   python signedAriaDNE.py path/to/mesh/directory --watertight
+   python preprocess.py path/to/mesh/directory --watertight
    ```
 
 ### Dependencies
