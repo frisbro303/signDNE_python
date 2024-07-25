@@ -81,7 +81,7 @@ When the `-v` or `--visualize` flag is used with a single input file, the tool w
 - matplotlib
 
 ## Preprocessing tool
-This processing tool generates watertight mesh version as well as simple clean up:
+This processing tool generates watertight mesh version as well as a simple clean up:
 - removing duplicate faces and vertices
 - remove folded faces.
 - remove null faces
