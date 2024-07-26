@@ -48,7 +48,7 @@ Files ending with "_watertight" will NOT be processed individually.
 
 ### Output
 
-The tool outputs the following values for each processed mesh as coloumns:
+The CLI outputs the following values for each processed mesh as coloumns:
 
 - File name
 - DNE
@@ -88,7 +88,7 @@ When the `-v` or `--visualize` flag is used with a single input file, the tool w
 - signed_ariaDNE
 
 ## Preprocessing tool
-This processing tool generates watertight mesh version as well as a simple clean up:
+This processing tool optionally generates watertight mesh version as well as a simple mesh clean up:
 - removing duplicate faces and vertices
 - remove folded faces.
 - remove null faces
