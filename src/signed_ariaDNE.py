@@ -23,10 +23,10 @@ def Centralize(mesh, watertight_mesh, scale=True):
     watertight_mesh.vertices -= center
     if scale:
         scale_factor = np.sqrt(1 / mesh.area)
-        mesh.vertices = mesh.vertices * scale_factor 
+        mesh.vertices = mesh.vertices * scale_factor
         # Only rescale if not already scaled
         if not watertight_mesh is mesh:
-            watertight_mesh.vertices = watertight_mesh.vertices * scale_factor 
+            watertight_mesh.vertices = watertight_mesh.vertices * scale_factor
 
 
 def triangulation_to_adjacency_matrix(vertices, faces, numPoints):
@@ -62,13 +62,13 @@ def ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type=
           June 09, 2023
     '''
 
-    if not (isinstance(mesh, trimesh.base.Trimesh) or 
+    if not (isinstance(mesh, trimesh.base.Trimesh) or
             isinstance(mesh, trimesh.base.Trimesh)):
         raise TypeError("mesh must be an instance of trimesh.base.Trimesh")
 
     if watertight_mesh == None:
         watertight_mesh = mesh
-    
+
     Centralize(mesh, watertight_mesh, scale=True)
 
     face_area = mesh.area_faces
@@ -86,7 +86,7 @@ def ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type=
 
     points = mesh.vertices
     faces = mesh.faces
-    num_points = np.shape(points)[0]; 
+    num_points = np.shape(points)[0];
     normals = np.zeros((num_points, 3))
     curvature = np.zeros(num_points)
 
@@ -94,7 +94,7 @@ def ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type=
     centroids = np.zeros((num_points, 3))
 
 
-    d_dist = None 
+    d_dist = None
 
     if not precomputed_dist == None:
         if isinstance(precomputed_dist, np.ndarray) and precomputed_dist.shape == (num_points, num_points):
@@ -159,8 +159,6 @@ def ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type=
         lambda_ = d[k]
         curvature[jj] = (lambda_ / np.sum(d))*sign
 
-        #curvature_nn[jj] = np.count_nonzero(w > np.max(w) * 1e-4)
-
     # save the outputs
     local_DNE = np.multiply(curvature, vertex_area)
 
@@ -170,8 +168,6 @@ def ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type=
     negative_indices = np.where(local_DNE < 0)
 
     positive_DNE = np.sum(local_DNE[positive_indices])
-    negative_DNE = np.sum(local_DNE[negative_indices]) 
+    negative_DNE = np.sum(local_DNE[negative_indices])
 
-    return local_DNE, DNE, positive_DNE, negative_DNE#, centroids
-
-
+    return local_DNE, curvature, DNE, positive_DNE, negative_DNE#, centroids

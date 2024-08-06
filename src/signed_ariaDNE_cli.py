@@ -5,6 +5,7 @@ from pathlib import Path
 import pandas as pd
 import sys
 from signed_ariaDNE import ariaDNE
+import numpy as np
 
 
 def visualize_mesh(mesh, local_DNE):
@@ -16,7 +17,19 @@ def visualize_mesh(mesh, local_DNE):
     colors = custom_cmap(normalized_values)
     mesh.visual.vertex_colors = np.hstack([(colors[:, :3] * 255).astype(np.uint8), np.full((len(mesh.vertices), 1), 1 * 255, dtype=np.uint8)])
     mesh.fix_normals()
-    mesh.show() 
+    scene = trimesh.Scene(mesh)
+    angle = np.radians(120)  # 90 degrees to radians
+    rotation_matrix = np.array([
+        [1, 0,            0,           0],
+        [0, np.cos(angle), -np.sin(angle), 0],
+        [0, np.sin(angle),  np.cos(angle), 0],
+        [0, 0,            0,           1]
+    ])
+
+    # Apply the rotation to the mesh
+    mesh.apply_transform(rotation_matrix)
+    scene.camera.resolution = [768, 768]
+    scene.show()
 
 
 def parse_arguments():
@@ -46,7 +59,7 @@ def get_file_names(input_paths):
         else:
             print(str(p) + " is not a file a or a directory")
 
-    # Only return paths that are files and do not have _watertight ending 
+    # Only return paths that are files and do not have _watertight ending
     return [f for f in file_names if f.is_file() and not has_postfix(f)]
 
 
@@ -88,22 +101,22 @@ def main():
     if args.visualize and len(file_names) != 1:
         print("Visualization only possible for single file inputs. Ignoring flag")
         sys.exit(1)
-   
+
     # Get sucessfully loaded files and file names
     load = [mesh for mesh in map(safe_load, file_names) if mesh is not None]
     # get meshes from loaded files
     meshes = [(m[0], m[1]) for m in load]
     file_names = [m[2] for m in load]
 
-    values = [ariaDNE(mesh, watertight_mesh, bandwidth=args.bandwidth, 
+    values = [ariaDNE(mesh, watertight_mesh, bandwidth=args.bandwidth,
                       cutoff=args.cutoff, distance_type=args.distance_type) \
               for (mesh, watertight_mesh) in meshes]
 
-    df = create_dataframe([v[1:] for v in values], file_names)
+    df = create_dataframe([v[2:] for v in values], file_names)
     output_results(df, args.output)
 
     if args.visualize:
-        visualize_mesh(meshes[0][0], values[0][0])
+        visualize_mesh(meshes[0][0], values[0][1])
 
 
 if __name__ == '__main__':
