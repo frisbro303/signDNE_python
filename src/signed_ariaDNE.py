@@ -161,7 +161,7 @@ def ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type=
 
     # save the outputs
     local_DNE = np.multiply(curvature, vertex_area)
-
+    
     DNE = np.sum(np.abs(local_DNE))
 
     positive_indices = np.where(local_DNE > 0)
@@ -169,5 +169,7 @@ def ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type=
 
     positive_DNE = np.sum(local_DNE[positive_indices])
     negative_DNE = np.sum(local_DNE[negative_indices])
+
+    local_DNE = curvature # overwrite local_DNE to be curvature for visualization purpose
 
     return local_DNE, curvature, DNE, positive_DNE, negative_DNE#, centroids
