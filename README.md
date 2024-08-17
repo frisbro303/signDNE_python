@@ -50,7 +50,7 @@ The CLI outputs the following values for each processed mesh as coloumns:
 
 - File name
 - DNE
-- PPositive component of DNE
+- Positive component of DNE
 - Negative component of DNE
 
 If the `-o` or `--output` flag is off, results will be outputed to STDOUT.
