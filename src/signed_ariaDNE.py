@@ -3,6 +3,7 @@ from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
 import trimesh
 import numpy as np
+import pymeshlab
 
 
 def ComputeF2V(mesh):
@@ -17,17 +18,11 @@ def ComputeF2V(mesh):
     return F2V
 
 
-def Centralize(mesh, watertight_mesh, scale=True):
+def centralize(mesh):
     center = np.sum(mesh.vertices, 0)/(mesh.vertices.shape[0])
     mesh.vertices -= center
-    watertight_mesh.vertices -= center
-    if scale:
-        scale_factor = np.sqrt(1 / mesh.area)
-        mesh.vertices = mesh.vertices * scale_factor
-        # Only rescale if not already scaled
-        if not watertight_mesh is mesh:
-            watertight_mesh.vertices = watertight_mesh.vertices * scale_factor
-
+    scale_factor = np.sqrt(1 / mesh.area)
+    mesh.vertices = mesh.vertices * scale_factor
 
 def triangulation_to_adjacency_matrix(vertices, faces, numPoints):
     A = np.zeros((numPoints, numPoints))
@@ -41,8 +36,23 @@ def triangulation_to_adjacency_matrix(vertices, faces, numPoints):
             A[v2, v1] = dist
     return A
 
+def close_holes(mesh):
+    ms = pymeshlab.MeshSet()
+    new_mesh = pymeshlab.Mesh(vertex_matrix=mesh.vertices, face_matrix=mesh.faces)
+    ms.add_mesh(new_mesh, "mesh")
+    ms.meshing_close_holes(
+            maxholesize=10000000,
+            selected=False,
+            newfaceselected=True,
+            selfintersection=False,
+            refinehole=True,
+    )
+    mesh_ = ms.current_mesh()
+    closed_mesh = trimesh.Trimesh(vertices=mesh_.vertex_matrix(), faces=mesh_.face_matrix())
+    return closed_mesh
 
-def ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomputed_dist=None):
+
+def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomputed_dist=None):
     '''
     This function computes the ariaDNE value of a mesh surface.
     ariaDNE is a robustly implemented algorithm for Dirichlet Normal
@@ -62,14 +72,17 @@ def ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type=
           June 09, 2023
     '''
 
-    if not (isinstance(mesh, trimesh.base.Trimesh) or
-            isinstance(mesh, trimesh.base.Trimesh)):
+    if not (isinstance(mesh, trimesh.base.Trimesh)):
         raise TypeError("mesh must be an instance of trimesh.base.Trimesh")
 
-    if watertight_mesh == None:
-        watertight_mesh = mesh
+    centralize(mesh)
 
-    Centralize(mesh, watertight_mesh, scale=True)
+    watertight_mesh = None
+    if mesh.is_watertight:
+        watertight_mesh = mesh
+    else:
+        watertight_mesh = close_holes(mesh)
+
 
     face_area = mesh.area_faces
     F2V = ComputeF2V(mesh)
@@ -161,7 +174,7 @@ def ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type=
 
     # save the outputs
     local_DNE = np.multiply(curvature, vertex_area)
-    
+
     DNE = np.sum(np.abs(local_DNE))
 
     positive_indices = np.where(local_DNE > 0)
@@ -171,4 +184,4 @@ def ariaDNE(mesh, watertight_mesh=None, bandwidth=0.08, cutoff=0, distance_type=
     negative_DNE = np.sum(local_DNE[negative_indices])
 
 
-    return local_DNE, curvature, DNE, positive_DNE, negative_DNE#, centroids
+    return local_DNE, curvature, DNE, positive_DNE, negative_DNE

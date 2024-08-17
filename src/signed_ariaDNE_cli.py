@@ -18,7 +18,7 @@ def visualize_mesh(mesh, local_DNE):
     mesh.visual.vertex_colors = np.hstack([(colors[:, :3] * 255).astype(np.uint8), np.full((len(mesh.vertices), 1), 1 * 255, dtype=np.uint8)])
     mesh.fix_normals()
     scene = trimesh.Scene(mesh)
-    angle = np.radians(120)  # 90 degrees to radians
+    angle = np.radians(120)
     rotation_matrix = np.array([
         [1, 0,            0,           0],
         [0, np.cos(angle), -np.sin(angle), 0],
@@ -65,12 +65,7 @@ def get_file_names(input_paths):
 
 def safe_load(file):
     try:
-        # Check if a watertight version exists
-        watertight_file = file.with_stem(str(file.stem) + "_watertight")
-        if watertight_file.exists():
-            return (trimesh.load(str(file)), trimesh.load(str(watertight_file)), file)
-        else:
-            return (trimesh.load(str(file)), None, file)
+        return trimesh.load(str(file)), file
     except Exception as e:
         print(e)
         return None
@@ -104,19 +99,17 @@ def main():
 
     # Get sucessfully loaded files and file names
     load = [mesh for mesh in map(safe_load, file_names) if mesh is not None]
-    # get meshes from loaded files
-    meshes = [(m[0], m[1]) for m in load]
-    file_names = [m[2] for m in load]
+    meshes, file_names = zip(*load)
 
-    values = [ariaDNE(mesh, watertight_mesh, bandwidth=args.bandwidth,
+    values = [ariaDNE(mesh, bandwidth=args.bandwidth,
                       cutoff=args.cutoff, distance_type=args.distance_type) \
-              for (mesh, watertight_mesh) in meshes]
+              for mesh in meshes]
 
     df = create_dataframe([v[2:] for v in values], file_names)
     output_results(df, args.output)
 
     if args.visualize:
-        visualize_mesh(meshes[0][0], values[0][1])
+        visualize_mesh(meshes[0], values[0][1])
 
 
 if __name__ == '__main__':
