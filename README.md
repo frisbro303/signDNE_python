@@ -14,11 +14,14 @@ The package consists of 3 files:
 - `src/preprocess.py` : Script for doing simple cleanups and generating watertight version of meshes.
 
 ## Signed ariaDNE
+The function will close holes if given a non-watertight mesh. Note that meshes must be manifold for automatic hole closing to work.
+
 ### Dependencies
 
 - trimesh
 - numpy
 - scipy
+- pymeshlab
 
 ## Command line interface
 Command line interface for the `ariaDNE` function.
@@ -31,11 +34,6 @@ python src/signed_ariaDNE_cli.py input [input] [-h] [-v] [-o [OUTPUT]] [-b BANDW
 #### Arguments
 
 - `input`: Path to mesh file(s) or directory containing mesh files.
-
-If the files are non-watertight, watertight versions may be provided alongside.
-The watertight versions are required to end with "_watertight" before the suffix.
-For instance, given a file called `tooth.ply`, the watertight version should be named `tooth_watertight.ply`.
-Files ending with "_watertight" will NOT be processed individually.
 
 #### Options
 
