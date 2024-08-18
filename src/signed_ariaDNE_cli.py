@@ -41,12 +41,7 @@ def parse_arguments():
     parser.add_argument("-d", "--distance-type", choices=['Euclidean', 'Geodesic'], default='Euclidean', help="Specify the distance type for calculations (default: Euclidean)")
     parser.add_argument("-c", "--cutoff", type=float, default=0, help="Set the cut-off threshold for DNE calculation (default: 0)")
     return parser.parse_args()
-
-
-def has_postfix(file):
-    parts = file.stem.split('_')
-    return parts[-1] == 'watertight'
-
+    
 
 def get_file_names(input_paths):
     file_names = []
@@ -59,8 +54,7 @@ def get_file_names(input_paths):
         else:
             print(str(p) + " is not a file a or a directory")
 
-    # Only return paths that are files and do not have _watertight ending
-    return [f for f in file_names if f.is_file() and not has_postfix(f)]
+    return [f for f in file_names if f.is_file()]
 
 
 def safe_load(file):
