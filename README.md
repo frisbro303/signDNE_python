@@ -61,17 +61,17 @@ When the `-v` or `--visualize` flag is used with a single input file, the tool w
 
 ### Examples
 
-1. Calculate DNE for a single file and visualize:
+1. Calculate signed ariaDNE for a single file and visualize:
    ```
    python src/signed_ariaDNE_cli.py path/to/mesh.ply -v
    ```
 
-2. Calculate DNE for multiple files and save results to CSV:
+2. Calculate signed ariaDNE for multiple files and save results to CSV:
    ```
    python src/signed_ariaDNE_cli.py path/to/mesh1.obj path/to/mesh2.ply -o results.csv
    ```
 
-3. Calculate DNE for all mesh files in a directory with custom bandwidth:
+3. Calculate signed ariaDNE for all mesh files in a directory with custom bandwidth:
    ```
    python src/signed_ariaDNE_cli.py path/to/mesh/directory -b 0.1
    ```
