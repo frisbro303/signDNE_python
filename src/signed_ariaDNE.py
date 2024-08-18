@@ -178,6 +178,7 @@ def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomput
         curvature[jj] = (lambda_ / np.sum(d))*sign
 
     # save the outputs
+    unweighted_local_DNE = curvature
     local_DNE = np.multiply(curvature, vertex_area)
 
     DNE = np.sum(np.abs(local_DNE))
@@ -189,4 +190,4 @@ def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomput
     negative_DNE = np.sum(local_DNE[negative_indices])
 
 
-    return local_DNE, curvature, DNE, positive_DNE, negative_DNE
+    return local_DNE, unweighted_local_DNE, DNE, positive_DNE, negative_DNE
