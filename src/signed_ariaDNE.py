@@ -54,23 +54,28 @@ def close_holes(mesh):
 
 def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomputed_dist=None):
     '''
-    This function computes the ariaDNE value of a mesh surface.
-    ariaDNE is a robustly implemented algorithm for Dirichlet Normal
-    Energy, which measures how much a surface deviates from a plane.
+    This function computes the ariaDNE and signed ariaDNE values of
+    a mesh surface. signed ariaDNE is a robustly implemented algorithm
+    for Dirichlet Normal Energy, which measures how much a surface
+    deviates from a plane.
 
     Input:
-          meshname     - the mesh .ply file
-          bandwidth    - the epsilon value in the paper, which indicates
-                         the size of local influence in the weight function
+          mesh          - trimesh mesh
+          bandwidth     - the epsilon value in the paper, which indicates
+                          the size of local influence in the weight function
 
     Output:
-          curvature   - local curvature values for each vertex
-          dne        - ARIADNE value for the surface
+          local_DNE    -
+          curvature    - local curvature values for each vertex
+          dne          - ARIADNE value for the surface
+          positive_DNE
+          negative_DNE
 
     Author:
           Shan Shan (sshan.asc@gmail.com)
           June 09, 2023
     '''
+
 
     if not (isinstance(mesh, trimesh.base.Trimesh)):
         raise TypeError("mesh must be an instance of trimesh.base.Trimesh")
