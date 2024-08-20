@@ -104,7 +104,6 @@ python src/preprocess.py input [input] [-h] [-w]
 #### Options
 
 - `-h`, `--help`: Show help message and exit
-- `-w`, `--watertight` : Generate a watertight version for each mesh ending in "_watertight" before the final suffix.
 
 ### Examples
 
