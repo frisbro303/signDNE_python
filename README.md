@@ -33,7 +33,7 @@ python src/signed_ariaDNE_cli.py input [input] [-h] [-v] [-o [OUTPUT]] [-b BANDW
 
 #### Arguments
 
-- `input`: Path to mesh file(s) or directory containing mesh files.
+- `input`: Path to mesh file(s) or directory containing mesh files. Files should be PLY or OBJ format. 
 
 #### Options
 
