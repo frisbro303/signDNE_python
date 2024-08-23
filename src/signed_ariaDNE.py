@@ -47,8 +47,6 @@ def close_holes(mesh):
             newfaceselected=True,
             selfintersection=False,
             refinehole=True,)
-    print(f"After Cleanup Vertex Count: {ms.current_mesh().vertex_number()}")
-    print(f"After Cleanup Face Count: {ms.current_mesh().face_number()}")
     mesh_ = ms.current_mesh()
     vertices = mesh_.vertex_matrix()
     faces = mesh_.face_matrix()
@@ -91,7 +89,6 @@ def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomput
         watertight_mesh = mesh
     else:
         watertight_mesh = close_holes(mesh)
-        print(watertight_mesh.is_watertight)
 
     watertight_mesh.export("watertight.ply")
 
