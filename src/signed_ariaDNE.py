@@ -36,6 +36,7 @@ def triangulation_to_adjacency_matrix(vertices, faces, numPoints):
             A[v2, v1] = dist
     return A
 
+
 def close_holes(mesh):
     ms = pymeshlab.MeshSet()
     new_mesh = pymeshlab.Mesh(vertex_matrix=mesh.vertices, face_matrix=mesh.faces)
@@ -45,10 +46,13 @@ def close_holes(mesh):
             selected=False,
             newfaceselected=True,
             selfintersection=False,
-            refinehole=True,
-    )
+            refinehole=True,)
+    print(f"After Cleanup Vertex Count: {ms.current_mesh().vertex_number()}")
+    print(f"After Cleanup Face Count: {ms.current_mesh().face_number()}")
     mesh_ = ms.current_mesh()
-    closed_mesh = trimesh.Trimesh(vertices=mesh_.vertex_matrix(), faces=mesh_.face_matrix())
+    vertices = mesh_.vertex_matrix()
+    faces = mesh_.face_matrix()
+    closed_mesh = trimesh.Trimesh(vertices=vertices, faces=faces, process=False)
     return closed_mesh
 
 
@@ -87,7 +91,9 @@ def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomput
         watertight_mesh = mesh
     else:
         watertight_mesh = close_holes(mesh)
+        print(watertight_mesh.is_watertight)
 
+    watertight_mesh.export("watertight.ply")
 
     face_area = mesh.area_faces
     F2V = ComputeF2V(mesh)
@@ -107,10 +113,6 @@ def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomput
     num_points = np.shape(points)[0];
     normals = np.zeros((num_points, 3))
     curvature = np.zeros(num_points)
-
-    # Only added for debugging and visualizations
-    centroids = np.zeros((num_points, 3))
-
 
     d_dist = None
 
@@ -165,9 +167,6 @@ def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomput
 
         # calculate weighted neighbourhood centroid
         neighbour_centroid = np.sum(points[neighbour, :] * w.T[:, np.newaxis], axis=0) / np.sum(w)
-
-        # Only added for debugging and visualizations
-        centroids[jj] = neighbour_centroid
 
         # determine if the centroid is insidbae or not in order find sign of curvature
         inside = watertight_mesh.ray.contains_points([neighbour_centroid])
