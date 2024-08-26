@@ -4,7 +4,8 @@ from scipy.sparse.csgraph import dijkstra
 import trimesh
 import numpy as np
 import pymeshlab
-
+import tempfile
+import os
 
 def ComputeF2V(mesh):
     F = mesh.faces.T
@@ -36,21 +37,35 @@ def triangulation_to_adjacency_matrix(vertices, faces, numPoints):
             A[v2, v1] = dist
     return A
 
-
 def close_holes(mesh):
     ms = pymeshlab.MeshSet()
+
+    # Add the mesh to the MeshSet
     new_mesh = pymeshlab.Mesh(vertex_matrix=mesh.vertices, face_matrix=mesh.faces)
     ms.add_mesh(new_mesh, "mesh")
+
+    # Close the holes in the mesh
     ms.meshing_close_holes(
-            maxholesize=10000000,
-            selected=False,
-            newfaceselected=True,
-            selfintersection=False,
-            refinehole=True,)
-    mesh_ = ms.current_mesh()
-    vertices = mesh_.vertex_matrix()
-    faces = mesh_.face_matrix()
-    closed_mesh = trimesh.Trimesh(vertices=vertices, faces=faces, process=False)
+        maxholesize=10000000,
+        selected=False,
+        newfaceselected=True,
+        selfintersection=False,
+        refinehole=True
+    )
+
+    # We generate temporary files to ensure
+    # that pymeshlab state is correctly updated
+    with tempfile.NamedTemporaryFile(suffix=".ply", delete=False) as tmpfile:
+        temp_filename = tmpfile.name
+        # Save the mesh to the temporary file
+        ms.save_current_mesh(temp_filename)
+
+    # Load the mesh into trimesh from the temporary file
+    closed_mesh = trimesh.load(temp_filename, file_type='ply')
+
+    # Clean up the temporary file
+    os.remove(temp_filename)
+
     return closed_mesh
 
 
