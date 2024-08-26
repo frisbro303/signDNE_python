@@ -22,6 +22,7 @@ The function will close holes if given a non-watertight mesh. Note that meshes m
 - numpy
 - scipy
 - pymeshlab
+- scipy
 
 ## Command line interface
 Command line interface for the `ariaDNE` function.
