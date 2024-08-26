@@ -40,11 +40,9 @@ def triangulation_to_adjacency_matrix(vertices, faces, numPoints):
 def close_holes(mesh):
     ms = pymeshlab.MeshSet()
 
-    # Add the mesh to the MeshSet
     new_mesh = pymeshlab.Mesh(vertex_matrix=mesh.vertices, face_matrix=mesh.faces)
     ms.add_mesh(new_mesh, "mesh")
 
-    # Close the holes in the mesh
     ms.meshing_close_holes(
         maxholesize=10000000,
         selected=False,
@@ -53,17 +51,15 @@ def close_holes(mesh):
         refinehole=True
     )
 
-    # We generate temporary files to ensure
+    # We generate a temporary file to ensure
     # that pymeshlab state is correctly updated
     with tempfile.NamedTemporaryFile(suffix=".ply", delete=False) as tmpfile:
         temp_filename = tmpfile.name
         # Save the mesh to the temporary file
         ms.save_current_mesh(temp_filename)
 
-    # Load the mesh into trimesh from the temporary file
     closed_mesh = trimesh.load(temp_filename, file_type='ply')
 
-    # Clean up the temporary file
     os.remove(temp_filename)
 
     return closed_mesh
