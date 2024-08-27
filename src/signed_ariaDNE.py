@@ -3,9 +3,8 @@ from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
 import trimesh
 import numpy as np
-import pymeshlab
-import tempfile
-import os
+import pyvista as pv
+
 
 def ComputeF2V(mesh):
     F = mesh.faces.T
@@ -37,32 +36,17 @@ def triangulation_to_adjacency_matrix(vertices, faces, numPoints):
             A[v2, v1] = dist
     return A
 
-def close_holes(mesh):
-    ms = pymeshlab.MeshSet()
 
-    new_mesh = pymeshlab.Mesh(vertex_matrix=mesh.vertices, face_matrix=mesh.faces)
-    ms.add_mesh(new_mesh, "mesh")
+def close_holes(tm_mesh):
+    pv_mesh = pv.wrap(tm_mesh)
 
-    ms.meshing_close_holes(
-        maxholesize=10000000,
-        selected=False,
-        newfaceselected=True,
-        selfintersection=False,
-        refinehole=True
-    )
+    filled_mesh = pv_mesh.fill_holes(hole_size=float("inf"))
 
-    # We generate a temporary file to ensure
-    # that pymeshlab state is correctly updated
-    with tempfile.NamedTemporaryFile(suffix=".ply", delete=False) as tmpfile:
-        temp_filename = tmpfile.name
-        # Save the mesh to the temporary file
-        ms.save_current_mesh(temp_filename)
+    vertices = filled_mesh.points
+    faces = filled_mesh.faces.reshape((-1, 4))[:, 1:]
+    tm_closed_mesh = trimesh.Trimesh(vertices=vertices, faces=faces)
 
-    closed_mesh = trimesh.load(temp_filename, file_type='ply')
-
-    os.remove(temp_filename)
-
-    return closed_mesh
+    return tm_closed_mesh
 
 
 def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomputed_dist=None):
