@@ -46,7 +46,6 @@ def close_holes(tm_mesh):
     faces = filled_mesh.faces.reshape((-1, 4))[:, 1:]
     tm_closed_mesh = trimesh.Trimesh(vertices=vertices, faces=faces)
     tm_closed_mesh.fix_normals()
-    tm_closed_mesh.fill_holes()
 
     return tm_closed_mesh
 
@@ -78,6 +77,13 @@ def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomput
 
     if not (isinstance(mesh, trimesh.base.Trimesh)):
         raise TypeError("mesh must be an instance of trimesh.base.Trimesh")
+
+    # Simple clean up
+    mesh.fill_holes()
+    mesh.update_faces(mesh.nondegenerate_faces(height=1e-08))
+    mesh.update_faces(mesh.unique_faces())
+    mesh.remove_infinite_values()
+    mesh.remove_unreferenced_vertices()
 
     centralize(mesh)
 
