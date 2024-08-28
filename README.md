@@ -16,7 +16,7 @@ The package consists of 3 files:
 ## Signed ariaDNE
 The function will close holes if given a non-watertight mesh. Note that meshes must be manifold for automatic hole closing to work.
 
-ariaDNE function automatically performs the following preprocessing:
+The following preprocessing is automatically performed:
 - remove degenerate faces
 - remove duplicate faces
 - remove unreferenced vertices
