@@ -93,8 +93,6 @@ def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomput
     else:
         watertight_mesh = close_holes(mesh)
 
-    watertight_mesh.export("watertight.ply")
-
     face_area = mesh.area_faces
     F2V = ComputeF2V(mesh)
     vertex_area = (face_area.T @ F2V)/3
