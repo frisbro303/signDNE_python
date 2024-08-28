@@ -40,11 +40,13 @@ def triangulation_to_adjacency_matrix(vertices, faces, numPoints):
 def close_holes(tm_mesh):
     pv_mesh = pv.wrap(tm_mesh)
 
-    filled_mesh = pv_mesh.fill_holes(hole_size=float("inf"))
+    filled_mesh = pv_mesh.fill_holes(hole_size=float('inf'))
 
     vertices = filled_mesh.points
     faces = filled_mesh.faces.reshape((-1, 4))[:, 1:]
     tm_closed_mesh = trimesh.Trimesh(vertices=vertices, faces=faces)
+    tm_closed_mesh.fix_normals()
+    tm_closed_mesh.fill_holes()
 
     return tm_closed_mesh
 
