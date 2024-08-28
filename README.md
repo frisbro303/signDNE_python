@@ -21,7 +21,7 @@ The function will close holes if given a non-watertight mesh. Note that meshes m
 - trimesh
 - numpy
 - scipy
-- pymeshlab
+- pyvista
 - scipy
 
 ## Command line interface
