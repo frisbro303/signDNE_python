@@ -61,17 +61,15 @@ def ariaDNE(mesh, bandwidth=0.08, cutoff=0, distance_type='Euclidean', precomput
           mesh          - trimesh mesh
           bandwidth     - the epsilon value in the paper, which indicates
                           the size of local influence in the weight function
+       	  optional distance type
+          optional precomputed distance matrix
 
     Output:
-          local_DNE    -
-          curvature    - local curvature values for each vertex
-          dne          - ARIADNE value for the surface
+          local_DNE
+          curvature
+          dne
           positive_DNE
           negative_DNE
-
-    Author:
-          Shan Shan (sshan.asc@gmail.com)
-          June 09, 2023
     '''
 
 
