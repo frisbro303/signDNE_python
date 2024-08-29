@@ -11,7 +11,8 @@ setup(
         "pyvista",
         "pandas",
         "networkx",
-        "rtree"
+        "rtree",
+	"pyglet<2"
     ],
     entry_points={
         "console_scripts": [
