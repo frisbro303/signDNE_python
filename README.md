@@ -7,7 +7,10 @@ A Python package for ariaDNE and its sign-oriented extension.
 3. [Signed ariaDNE](#Signed-ariaDNE)
 4. [Command line interface](#Command-line-interface)
 ## Package description
-The package is intended for use as a library in a normal python environment or through the dedicated command line interface.
+The package is intended for use as a library in a normal python environment or through the dedicated command line interface (CLI).
+To use the CLI run the command `sign_ariaDNE` in the terminal.
+To use as a library import by `from sign_ariaDNE import ariaDNE`.
+
 The package consists of 3 files:
 - `src/signed_ariaDNE.py` : File containing the function `ariaDNE` for calculating the DNE and signed DNE of a shape, which can be imported as a library or used through the command line interface. 
 - `src/signed_ariaDNE_cli.py` : Command line interface for the `ariaDNE` function.
