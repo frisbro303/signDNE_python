@@ -14,7 +14,7 @@ pip install git+https://github.com/anonymized/for/review.git
 ```
 
 ## sign_ariaDNE library
-To use as a library add `from sign_ariaDNE import ariaDNE`
+The library can be imported as `from sign_ariaDNE import ariaDNE`.
 
 The function will calculate local DNE, local curvature values, DNE, positiveDNE component, and negativeDNE component.
 
