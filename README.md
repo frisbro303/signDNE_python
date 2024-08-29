@@ -8,7 +8,7 @@ A Python package for ariaDNE and its sign-oriented extension.
 4. [Command line interface](#Command-line-interface)
 
 ## Installation
-In order to install the library and command line interface run the following command:
+The package is installed by running the following command:
 ```
 pip install git+https://github.com/anonymized/for/review.git
 ```
