@@ -1,5 +1,5 @@
-# Signed ariaDNE
-A python package for robustly computing DNE and signedDNE
+# Sign ariaDNE
+A Python package for ariaDNE and its sign-oriented extension
 
 ## Index
 1. [Package description](#Package-description)
