@@ -12,6 +12,12 @@ The package consists of 3 files:
 - `src/signed_ariaDNE_cli.py` : Command line interface for the `ariaDNE` function.
 
 ## Installation
+In order to install the library and command line interface run
+```
+pip install git+https://github.com/anonymized/for/review.git
+```
+
+
 ```
 pip install .
 ```
