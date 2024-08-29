@@ -17,10 +17,6 @@ In order to install the library and command line interface run
 pip install git+https://github.com/anonymized/for/review.git
 ```
 
-
-```
-pip install .
-```
 ## Sign ariaDNE
 The function will close holes if given a non-watertight mesh. Note that meshes must be manifold for automatic hole closing to work.
 
