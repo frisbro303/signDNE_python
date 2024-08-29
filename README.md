@@ -11,7 +11,10 @@ The package consists of 3 files:
 - `src/signed_ariaDNE.py` : File containing the function `ariaDNE` for calculating the DNE and signed DNE of a shape, which can be imported as a library or used through the command line interface. 
 - `src/signed_ariaDNE_cli.py` : Command line interface for the `ariaDNE` function.
 - `src/preprocess.py` : Script for doing simple cleanups and generating watertight version of meshes.
-
+## Installation
+```
+pip install .
+```
 ## Signed ariaDNE
 The function will close holes if given a non-watertight mesh. Note that meshes must be manifold for automatic hole closing to work.
 
