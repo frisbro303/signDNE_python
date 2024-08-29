@@ -5,7 +5,6 @@ A python package for robustly computing DNE and signedDNE
 1. [Package description](#Package-description)
 2. [Signed ariaDNE](#Signed-ariaDNE)
 3. [Command line interface](#Command-line-interface)
-4. [Preprocessing tool](#Preprocessing-tool)
 ## Package description
 The package is intended for use as a library in a normal python environment or through the dedicated command line interface.
 The package consists of 3 files:
