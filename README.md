@@ -60,7 +60,7 @@ If the `-o` or `--output` flag is off, results will be outputed to STDOUT.
 
 ### Visualization
 
-When the `-v` or `--visualize` flag is used with a single input file, the tool will display a 3D visualization of the mesh. The mesh will be colored based on the normalized local DNE values, color gradient from blue through white to red. Blue represents low DNE values and red represents high DNE values.
+When the `-v` or `--visualize` flag is used with a single input file, the tool will display a 3D visualization of the mesh. The mesh will be colored based on the normalized curvature values, color gradient from blue through white to red. Blue represents low curvature values and red represents high curvature values.
 
 ### Examples
 
