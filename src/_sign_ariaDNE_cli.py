@@ -4,7 +4,7 @@ import argparse
 from pathlib import Path
 import pandas as pd
 import sys
-from signed_ariaDNE import ariaDNE
+from sign_ariaDNE import ariaDNE
 import numpy as np
 
 
@@ -41,7 +41,7 @@ def parse_arguments():
     parser.add_argument("-d", "--distance-type", choices=['Euclidean', 'Geodesic'], default='Euclidean', help="Specify the distance type for calculations (default: Euclidean)")
     parser.add_argument("-c", "--cutoff", type=float, default=0, help="Set the cut-off threshold for DNE calculation (default: 0)")
     return parser.parse_args()
-    
+
 
 def get_file_names(input_paths):
     file_names = []
