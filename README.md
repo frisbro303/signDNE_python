@@ -6,14 +6,6 @@ A Python package for ariaDNE and its sign-oriented extension.
 2. [Installation](#Installation)
 3. [Signed ariaDNE](#Signed-ariaDNE)
 4. [Command line interface](#Command-line-interface)
-## Package description
-The package is intended for use as a library in a normal python environment or through the dedicated command line interface (CLI).
-To use the CLI run the command `sign_ariaDNE` in the terminal.
-To use as a library import by `from sign_ariaDNE import ariaDNE`.
-
-The package consists of 3 files:
-- `src/signed_ariaDNE.py` : File containing the function `ariaDNE` for calculating the DNE and signed DNE of a shape, which can be imported as a library or used through the command line interface. 
-- `src/signed_ariaDNE_cli.py` : Command line interface for the `ariaDNE` function.
 
 ## Installation
 In order to install the library and command line interface run the following command:
@@ -21,10 +13,13 @@ In order to install the library and command line interface run the following com
 pip install git+https://github.com/anonymized/for/review.git
 ```
 
-## Sign ariaDNE
-The function will close holes if given a non-watertight mesh. Note that meshes must be manifold for automatic hole closing to work.
+## sign_ariaDNE library
+To use as a library add `from sign_ariaDNE import ariaDNE`
+
+The function will calculate local DNE, local curvature values, DNE, positiveDNE component, and negativeDNE component.
 
 The following preprocessing is automatically performed:
+- Closing of all holes if given mesh is non-watertight.
 - remove degenerate faces
 - remove duplicate faces
 - remove unreferenced vertices
