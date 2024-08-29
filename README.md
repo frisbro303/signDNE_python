@@ -3,8 +3,9 @@ A Python package for ariaDNE and its sign-oriented extension
 
 ## Index
 1. [Package description](#Package-description)
-2. [Signed ariaDNE](#Signed-ariaDNE)
-3. [Command line interface](#Command-line-interface)
+2. [Installation](#Installation)
+3. [Signed ariaDNE](#Signed-ariaDNE)
+4. [Command line interface](#Command-line-interface)
 ## Package description
 The package is intended for use as a library in a normal python environment or through the dedicated command line interface.
 The package consists of 3 files:
