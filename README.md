@@ -1,5 +1,5 @@
 # Sign ariaDNE
-A Python package for ariaDNE and its sign-oriented extension
+A Python package for ariaDNE and its sign-oriented extension.
 
 ## Index
 1. [Package description](#Package-description)
