@@ -4,7 +4,7 @@ A Python package for ariaDNE and its sign-oriented extension.
 ## Index
 1. [Package description](#Package-description)
 2. [Installation](#Installation)
-3. [Signed ariaDNE](#Signed-ariaDNE)
+3. [sign ariaDNE](#sign_ariaDNE-library)
 4. [Command line interface](#Command-line-interface)
 
 ## Installation
