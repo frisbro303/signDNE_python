@@ -24,14 +24,7 @@ The following preprocessing is automatically performed:
 - remove duplicate faces
 - remove unreferenced vertices
 - remove infinite values from face and vertex data
-
-### Dependencies
-
-- trimesh
-- numpy
-- scipy
-- pyvista
-- scipy
+  
 
 ## Command line interface
 Command line interface for the `ariaDNE` function.
@@ -88,10 +81,13 @@ When the `-v` or `--visualize` flag is used with a single input file, the tool w
 
 
 
-### Dependencies
-
+## Dependencies
+- scipy
 - trimesh
 - numpy
+- pyvista
 - pandas
-- signed_ariaDNE
+- networkx
+- rtree
+- pyglet<2
 
