@@ -1,5 +1,5 @@
-# Signed ariaDNE
-A python package for robustly computing DNE and signedDNE
+# Sign ariaDNE
+A Python package for ariaDNE and its sign-oriented extension
 
 ## Index
 1. [Package description](#Package-description)
@@ -10,12 +10,12 @@ The package is intended for use as a library in a normal python environment or t
 The package consists of 3 files:
 - `src/signed_ariaDNE.py` : File containing the function `ariaDNE` for calculating the DNE and signed DNE of a shape, which can be imported as a library or used through the command line interface. 
 - `src/signed_ariaDNE_cli.py` : Command line interface for the `ariaDNE` function.
-- `src/preprocess.py` : Script for doing simple cleanups and generating watertight version of meshes.
+
 ## Installation
 ```
 pip install .
 ```
-## Signed ariaDNE
+## Sign ariaDNE
 The function will close holes if given a non-watertight mesh. Note that meshes must be manifold for automatic hole closing to work.
 
 The following preprocessing is automatically performed:
@@ -37,7 +37,7 @@ Command line interface for the `ariaDNE` function.
 
 ### Usage
 ```
-python src/signed_ariaDNE_cli.py input [input] [-h] [-v] [-o [OUTPUT]] [-b BANDWIDTH] [-d {Euclidean,Geodesic}] [-c CUTOFF]
+sign_ariaDNE input [input] [-h] [-v] [-o [OUTPUT]] [-b BANDWIDTH] [-d {Euclidean,Geodesic}] [-c CUTOFF]
 ```
 
 #### Arguments
@@ -72,17 +72,17 @@ When the `-v` or `--visualize` flag is used with a single input file, the tool w
 
 1. Calculate signed ariaDNE for a single file and visualize:
    ```
-   python src/signed_ariaDNE_cli.py path/to/mesh.ply -v
+   sign_ariaDNE path/to/mesh.ply -v
    ```
 
 2. Calculate signed ariaDNE for multiple files and save results to CSV:
    ```
-   python src/signed_ariaDNE_cli.py path/to/mesh1.obj path/to/mesh2.ply -o results.csv
+   sign_ariaDNE path/to/mesh1.obj path/to/mesh2.ply -o results.csv
    ```
 
 3. Calculate signed ariaDNE for all mesh files in a directory with custom bandwidth:
    ```
-   python src/signed_ariaDNE_cli.py path/to/mesh/directory -b 0.1
+   sign_ariaDNE path/to/mesh/directory -b 0.1
    ```
 
 
