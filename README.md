@@ -1,10 +1,10 @@
-# Sign ariaDNE
+# signDNE
 A Python package for ariaDNE and its sign-oriented extension.
 
 ## Index
 1. [Package description](#Package-description)
 2. [Installation](#Installation)
-3. [sign ariaDNE library](#sign_ariaDNE-library)
+3. [signDNE library](#signDNE-library)
 4. [Command line interface](#Command-line-interface)
 
 ## Installation
@@ -13,8 +13,8 @@ The package is installed by running the following command:
 pip install git+https://github.com/wush303/signDNE_python.git
 ```
 
-## sign_ariaDNE library
-The library can be imported as `from sign_ariaDNE import ariaDNE`.
+## signDNE library
+In order to acess the ariaDNE function add `from signDNE import ariaDNE` to your script.
 
 The function will calculate local DNE, local curvature values, DNE, positiveDNE component, and negativeDNE component.
 
