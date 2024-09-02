@@ -12,7 +12,7 @@ setup(
         "pandas",
         "networkx",
         "rtree",
-	"pyglet<2"
+        "pyglet<2"
     ],
     entry_points={
         "console_scripts": [
