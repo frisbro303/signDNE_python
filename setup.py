@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name="sign_ariaDNE",
+    name="signDNE",
     version="0.1.0",
     package_dir={"": "src"},
     install_requires=[
@@ -16,7 +16,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "sign_ariaDNE=_sign_ariaDNE_cli:main",
+            "signDNE=_signDNE_cli:main",
         ],
     },
     author="Your Name",
