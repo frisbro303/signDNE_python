@@ -10,7 +10,7 @@ A Python package for ariaDNE and its sign-oriented extension.
 ## Installation
 The package is installed by running the following command:
 ```
-pip install git+https://github.com/anonymized/for/review.git
+pip install git+git@github.com:wush303/signDNE_python.git
 ```
 
 ## sign_ariaDNE library
