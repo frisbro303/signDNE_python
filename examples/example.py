@@ -1,8 +1,8 @@
 import trimesh
-import sign_ariaDNE
+import signDNE
 
 mesh = trimesh.load('data/normal.ply')
-local_DNE, curvature, DNE, positive_DNE, negative_DNE = sign_ariaDNE.ariaDNE(mesh, 0.08) 
+local_DNE, local_curvature, area, DNE, positive_DNE, negative_DNE = signDNE.ariaDNE(mesh, 0.08) 
 
 print("normal:")
 print("DNE: " + str(DNE))
