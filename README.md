@@ -31,7 +31,7 @@ Command line interface for the `ariaDNE` function.
 
 ### Usage
 ```
-sign_ariaDNE input [input] [-h] [-v] [-o [OUTPUT]] [-b BANDWIDTH] [-d {Euclidean,Geodesic}] [-c CUTOFF]
+signDNE input [input] [-h] [-v] [-o [OUTPUT]] [-b BANDWIDTH] [-d {Euclidean,Geodesic}] [-c CUTOFF]
 ```
 
 #### Arguments
@@ -66,17 +66,17 @@ When the `-v` or `--visualize` flag is used with a single input file, the tool w
 
 1. Calculate signed ariaDNE for a single file and visualize:
    ```
-   sign_ariaDNE path/to/mesh.ply -v
+   signDNE path/to/mesh.ply -v
    ```
 
 2. Calculate signed ariaDNE for multiple files and save results to CSV:
    ```
-   sign_ariaDNE path/to/mesh1.obj path/to/mesh2.ply -o results.csv
+   signDNE path/to/mesh1.obj path/to/mesh2.ply -o results.csv
    ```
 
 3. Calculate signed ariaDNE for all mesh files in a directory with custom bandwidth:
    ```
-   sign_ariaDNE path/to/mesh/directory -b 0.1
+   signDNE path/to/mesh/directory -b 0.1
    ```
 
 
