@@ -184,7 +184,7 @@ def aria_dne(
     local_dne = np.multiply(local_curvature, vertex_area)
     dne = np.sum(np.abs(local_dne))
 
-    positive_indices = np.where(local_dne > 0)
+    positive_indices = np.where(local_dne >= 0)
     negative_indices = np.where(local_dne < 0)
 
     positive_dne = np.sum(local_dne[positive_indices])
