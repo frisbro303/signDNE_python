@@ -55,6 +55,9 @@ The CLI outputs the following values for each processed mesh as coloumns:
 - DNE
 - Positive component of DNE
 - Negative component of DNE
+- Surface area
+- Positive surface area
+- Negative surface area
 
 If the `-o` or `--output` flag is off, results will be outputed to STDOUT.
 
