@@ -10,7 +10,7 @@ A Python package for ariaDNE and its sign-oriented extension.
 ## Installation
 The package is installed by running the following command:
 ```
-pip install git+https://github.com/wush303/signDNE_python.git
+pip install git+https://github.com/frisbro303/signDNE_python.git
 ```
 
 ## signDNE library
@@ -55,6 +55,9 @@ The CLI outputs the following values for each processed mesh as coloumns:
 - DNE
 - Positive component of DNE
 - Negative component of DNE
+- Surface area
+- Positive surface area
+- Negative surface area
 
 If the `-o` or `--output` flag is off, results will be outputed to STDOUT.
 
