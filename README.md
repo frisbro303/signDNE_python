@@ -14,7 +14,7 @@ pip install git+https://github.com/frisbro303/signDNE_python.git
 ```
 
 ## signDNE library
-In order to acess the ariaDNE function add `from signDNE import ariaDNE` to your script.
+In order to acess the ariaDNE function add `from signDNE import aria_dne` to your script.
 
 The function will calculate local DNE, local curvature values, DNE, positiveDNE component, and negativeDNE component.
 
