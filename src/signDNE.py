@@ -82,8 +82,8 @@ def aria_dne(
     mesh.remove_unreferenced_vertices()
 
     unnormalized_face_area = mesh.area_faces
-    unnormalized_f2v = compute_f2v(mesh)
-    unnormalized_vertex_area = (unnormalized_face_area.T @ unnormalized_f2v) / 3
+    f2v = compute_f2v(mesh)
+    unnormalized_vertex_area = (unnormalized_face_area.T @ f2v) / 3
 
     centralize(mesh)
 
@@ -93,7 +93,6 @@ def aria_dne(
         watertight_mesh = close_holes(mesh)
 
     face_area = mesh.area_faces
-    f2v = compute_f2v(mesh)
     vertex_area = (face_area.T @ f2v) / 3
 
     # Calculate non-weighted vertex normals
