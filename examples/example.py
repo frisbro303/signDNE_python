@@ -1,7 +1,7 @@
 import trimesh
 import signDNE
 
-mesh = trimesh.load('data/normal.ply')
+mesh = trimesh.load('../data/normal.ply')
 
 (
     local_DNE, local_curvature, DNE, positive_DNE, negative_DNE,
